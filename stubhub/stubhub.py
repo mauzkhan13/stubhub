@@ -31,6 +31,7 @@ def get_browser():
     driver = webdriver.Remote(command_executor=grid_url, options=options)
     driver.get(website)
     driver.maximize_window()
+    print("Browser is successfully opened")
     return driver
 
 def event_urls(browser): 
@@ -51,6 +52,7 @@ def event_urls(browser):
         url = link.get('href')
         complete_url = base_url + url
         events_links.append(complete_url)
+        print("Scraped all Events Link")
     return events_links
 
 def scrolling_page(browser):
@@ -134,7 +136,8 @@ def json_data(category, ticket_prices, sets_information, tickets_number):
 
     with open(file_path, 'w') as f:
         f.write(json_data_cleaned)
-
+        
+    print("The scraper is successfully finished")
 
 if __name__ == '__main__':
     browser = get_browser()
