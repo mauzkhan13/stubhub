@@ -24,11 +24,12 @@ def get_browser():
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-logging')
     options.add_argument('--log-level=3')
-
     options.add_argument('--headless')
-    driver = webdriver.Chrome(options=options)
-    url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
-    driver.get(url)
+    
+    website = "https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4"
+    grid_url = "http://localhost:4444/wd/hub"
+    driver = webdriver.Remote(command_executor=grid_url, options=options)
+    driver.get(website)
     driver.maximize_window()
     return driver
 
