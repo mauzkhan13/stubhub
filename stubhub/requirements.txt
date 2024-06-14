@@ -1,0 +1,10 @@
+pip install virtualenv
+virtualenv venv
+source venv/bin/activate
+
+
+
+pip install pandas
+pip install selenium
+pip install beautifulsoup4
+pip install lxml
