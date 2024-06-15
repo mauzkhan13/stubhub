@@ -70,6 +70,7 @@ def event_urls(browser):
     texts = next_pa = browser.find_elements(By.XPATH, '(//div[@class="Panel Panel-Border EventListPanel"]/div)[22]/button')
     for t in texts:
         print(t.get_attribute('innerHTML'))
+        t.click()
 
  
         
