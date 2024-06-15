@@ -127,21 +127,24 @@ def json_data(category, ticket_prices, sets_information, tickets_number):
     combined_data = existing_data + new_data
 
     json_data_cleaned = json.dumps(combined_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
-    print("The scraper is successfully finished")
+    print("JSON data extraction successful")
     with open(filename, 'w') as f:
         f.write(json_data_cleaned)
+    return True
 
 
-
-def process_event(index, url):
-    print(f"Processing URL {index}: {url}")
-    browser = get_browser()
+def process_event(url):
+    browser = get_browser()  # Instantiate a new browser
     browser.get(url)
     scrolling_page(browser)
     category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
-    json_data(category, ticket_prices, sets_information, tickets_number)
-    print(f"Processing URL {index} is extracted json_data successfully")
+    success = json_data(category, ticket_prices, sets_information, tickets_number)
     browser.quit()
+
+    if success:
+        print(f"Processing for URL {url} is complete.")
+    else:
+        print(f"Failed to extract JSON data for URL {url}.")
     
 if __name__ == '__main__':
     urls = event_urls(get_browser())  # Instantiate a single browser instance
