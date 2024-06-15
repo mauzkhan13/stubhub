@@ -128,7 +128,7 @@ if __name__ == '__main__':
 
     # for url in urls:
     for index, url in enumerate(urls):
-        print(f"{Processing the URL No: {index}")
+        print(f"Processing the URL No: {index}") 
         browser = get_browser()
         browser.get(url)
         scrolling_page(browser)
