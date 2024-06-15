@@ -44,7 +44,7 @@ def event_urls(browser):
         url = link.get('href')
         complete_url = base_url + url
         events_links.append(complete_url)
-   print("Total Number of Event Links:", len(events_links))
+    print("Total Number of Event Links:", len(events_links))
     return events_links
 
 def scrolling_page(browser):
