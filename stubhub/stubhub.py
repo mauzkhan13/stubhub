@@ -173,7 +173,7 @@ if __name__ == '__main__':
     urls = event_urls(get_browser())  # Instantiate a single browser instance
 
     # Define the maximum number of threads
-    max_threads = 10
+    max_threads = 1
 
     with concurrent.futures.ThreadPoolExecutor(max_threads) as executor:
         executor.map(process_event, urls)
