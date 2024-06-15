@@ -37,17 +37,16 @@ def get_browser():
 def event_urls(browser):
     while True:
         try:
-            
             next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
-            browser.execute_script("arguments[0].scrollIntoView();", next_page)
+            driver.execute_script("arguments[0].scrollIntoView();", next_page)
             sleep(0.5)
+            print("Clicking on 'See more events'")
             next_page.click()
             sleep(0.5)
         except (StaleElementReferenceException, ElementClickInterceptedException):
             pass
         except (NoSuchElementException, TimeoutException):
             break
-  
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
     divs = soup.find_all('a', {'class': 'cbt-redirection__link EventItem__TitleLink'})
