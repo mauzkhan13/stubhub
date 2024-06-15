@@ -43,8 +43,8 @@ def event_urls(browser):
             print("Clicking on 'See more events'")
             next_page.click()
             sleep(0.5)
-        except (StaleElementReferenceException, ElementClickInterceptedException):
-            pass
+        # except (StaleElementReferenceException, ElementClickInterceptedException):
+        #     pass
         except (NoSuchElementException, TimeoutException):
             break
     events_links = []
