@@ -27,11 +27,11 @@ def get_browser():
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-logging')
     options.add_argument('--log-level=3')
-    # options.add_argument('--headless')
+    options.add_argument('--headless')
     options.add_argument('--window-size=1920,1080')
     options.binary_location = '/usr/bin/google-chrome' 
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-    # driver = webdriver.Chrome(options=options)
+    # driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    driver = webdriver.Chrome(options=options)
     url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
     driver.get(url)
     driver.maximize_window()
