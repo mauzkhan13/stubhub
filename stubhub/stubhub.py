@@ -54,16 +54,18 @@ def event_urls(browser):
     #     print("Cookie modal overlay not found.")
     
     # browser.implicitly_wait(2)  # Wait for 2 seconds
-        
+    next_page = browser.find_elements(By.XPATH, '//section[@class="EntityPage__SeoBottomContent"]')
+    for nextPage in next_page:
+        print(nextPage.text)
     # Check if the "See more events" button is clickable
     # next_page = wait.until(EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]')))
     # print("Element found, attempting to click...")
-    next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
-    print(next_page.text)
+    # next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
+    # print(next_page.text)
     next_pa = browser.find_element(By.XPATH, '//button[contains(@class, "EventListPanel__Footer") and contains(@class, "formatted-link__button-as-link")]')
     
     print(next_pa.text)
-    next_page.click()
+    # next_page.click()
     # print("Clicked successfully.")
     # texts = next_pa = browser.find_elements(By.XPATH, '//div[@class="Panel Panel-Border EventListPanel"]/div')
     # for t in texts:
