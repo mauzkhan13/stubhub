@@ -37,8 +37,18 @@ def get_browser():
     return driver
 
 def event_urls(browser):
-    next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
+    wait = WebDriverWait(browser, 10)  # Wait up to 10 seconds
+    next_page = wait.until(EC.presence_of_element_located((By.XPATH, '(//*[contains(text(),"See more events")])[2]')))
+    
+    # Scroll into view using JavaScript
+    browser.execute_script("arguments[0].scrollIntoView(true);", next_page)
+    
+    # Wait until the element is clickable
+    next_page = wait.until(EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]')))
+    
+    print("Element found and scrolled into view, attempting to click...")
     next_page.click()
+    print("Clicked successfully.")
         
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
