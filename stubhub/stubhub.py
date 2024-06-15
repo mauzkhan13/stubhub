@@ -1,5 +1,4 @@
 from selenium import webdriver
-from pyvirtualdisplay import Display
 import threading
 import json
 from selenium import webdriver
@@ -19,11 +18,8 @@ import re
 import threading
 import concurrent.futures
 import requests
-from selenium.webdriver.common.action_chains import ActionChains
 
-from selenium.webdriver.common.keys import Keys
 def get_browser():
-
     options = Options()
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-gpu')
@@ -33,62 +29,14 @@ def get_browser():
     # options.add_argument('--headless')
     options.add_argument('--window-size=1920,1080')
     options.binary_location = '/usr/bin/google-chrome' 
-    
-
- 
     driver = webdriver.Chrome(options=options)
     url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
     driver.get(url)
     driver.maximize_window()
-    driver.execute_script("document.body.style.zoom='25%'")
     print("Browser is successfully opened")
     return driver
 
-def event_urls(browser):
-    scroll_height = 1000  # You can adjust this value as needed
-    browser.execute_script(f"window.scrollBy(0, {scroll_height});")
-    wait = WebDriverWait(browser, 10)  # Wait up to 10 seconds
-        
-    # # Dismiss the cookie modal overlay if it exists
-    # try:
-    #     cookie_overlay = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'cookieModal__overlay')))
-    #     browser.execute_script("arguments[0].click();", cookie_overlay)
-    #     print("Dismissed the cookie modal overlay.")
-    # except TimeoutException:
-    #     print("Cookie modal overlay not found.")
-    
-    # browser.implicitly_wait(2)  # Wait for 2 seconds
-    next_page = browser.find_elements(By.XPATH, '//section[@class="EntityPage__SeoBottomContent"]')
-    for nextPage in next_page:
-        print(nextPage.text)
-    # Check if the "See more events" button is clickable
-    # next_page = wait.until(EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]')))
-    # print("Element found, attempting to click...")
-    # next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
-    # print(next_page.text)
-    next_pa = browser.find_element(By.XPATH, '//button[contains(@class, "EventListPanel__Footer") and contains(@class, "formatted-link__button-as-link")]')
-    
-    print(next_pa.text)
-    # next_pa.click()
-    # print("Clicked successfully.")
-    # texts = next_pa = browser.find_elements(By.XPATH, '//div[@class="Panel__Footer"]')
-    # for t in texts:
-    #     print(t.get_attribute('innerHTML'))
-    #     WebDriverWait(browser, 2).until(EC.visibility_of(t))
-    #     action = ActionChains(browser)
-    #     action.move_to_element(t).perform()
-    #     t.click()
-    see_more_button = browser.find_element(By.XPATH, '//div//button[contains(text(), "See more events")]')
-    browser.execute_script("arguments[0].scrollIntoView();", see_more_button)
-    see_more_button.send_keys(Keys.ENTER)
-    # Wait until the button is clickable
-    # WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//div//button[contains(text(), "See more events")]')))
-   
-    # Click the button
-    
-    sleep(5)
- 
-        
+def event_urls(browser):   
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
     divs = soup.find_all('a', {'class': 'cbt-redirection__link EventItem__TitleLink'})
@@ -126,12 +74,10 @@ def clean_text(text):
 def ticket_info(browser):
     soup = BeautifulSoup(browser.page_source, 'html.parser')
     card_elements = soup.select('ul.RoyalTicketList__container > li')
-
     category = []
     ticket_prices = []
     sets_information = []
     tickets_number = []
-
     for card_element in card_elements:
         element = html.fromstring(str(card_element))
 
@@ -160,52 +106,57 @@ def ticket_info(browser):
     return category, ticket_prices, sets_information, tickets_number
 
 def json_data(category, ticket_prices, sets_information, tickets_number):
-    
     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
-    file_path = r"C:\Users\Mauz Khan\Desktop\stubhub.json"
     new_data = json.loads(df.to_json(orient='records'))
-
-    if os.path.exists(file_path):
-        with open(file_path, 'r') as f:
-            try:
-                existing_data = json.load(f)
-            except json.JSONDecodeError:
-                existing_data = []
+    
+    save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
+    
+    json_data_cleaned = json.dumps(new_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(save_data_url, data=json_data_cleaned, headers=headers)
+    if response.status_code == 200:
+        print(f'JSON Data successfully sent to the URL .{response.status_code}')
     else:
-        existing_data = []
-
-    combined_data = existing_data + new_data
-
-    json_data_cleaned = json.dumps(combined_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
-
-    with open(file_path, 'w') as f:
-        f.write(json_data_cleaned)
+        print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
     return True
 
-
-def process_event(url):
-    browser = get_browser()  # Instantiate a new browser
-    browser.get(url)
-    scrolling_page(browser)
-    category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
-    success = json_data(category, ticket_prices, sets_information, tickets_number)
-    browser.quit()
-
-    if success:
-        print(f"Processing for URL {url} is complete.")
-    else:
-        print(f"Failed to extract JSON data for URL {url}.")
-    
 if __name__ == '__main__':
-    urls = event_urls(get_browser())  # Instantiate a single browser instance
+    browser = get_browser()
+    urls = event_urls(browser)
+    browser.quit() 
 
-    # Define the maximum number of threads
-    max_threads = 1
+    # for url in urls:
+    for index, url in enumerate(urls):
+        print(f"{Processing the URL No: {index}")
+        browser = get_browser()
+        browser.get(url)
+        scrolling_page(browser)
+        category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
+        json_data(category, ticket_prices, sets_information, tickets_number)
+        browser.quit() 
+# def process_event(url):
+#     browser = get_browser()  # Instantiate a new browser
+#     browser.get(url)
+#     scrolling_page(browser)
+#     category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
+#     success = json_data(category, ticket_prices, sets_information, tickets_number)
+#     browser.quit()
 
-    with concurrent.futures.ThreadPoolExecutor(max_threads) as executor:
-        executor.map(process_event, urls)
+#     if success:
+#         print(f"Processing for URL {url} is complete.")
+#     else:
+#         print(f"Failed to extract JSON data for URL {url}.")
+    
+# if __name__ == '__main__':
+#     urls = event_urls(get_browser())  # Instantiate a single browser instance
 
-    print("All event URLs have been processed.")
+#     # Define the maximum number of threads
+#     max_threads = 1
+
+#     with concurrent.futures.ThreadPoolExecutor(max_threads) as executor:
+#         executor.map(process_event, urls)
+
+#     print("All event URLs have been processed.")
 # if __name__ == '__main__':
 #     browser = get_browser()
 #     urls = event_urls(browser)
