@@ -43,21 +43,12 @@ def get_browser():
     return driver
 
 def event_urls(browser): 
-    max_retries = 3
-    while True:
+   while True:
         try:
-            retries = 0
-            while retries < max_retries:
-                try:
-                    next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
-                    next_page.click()
-                    break
-                except ElementClickInterceptedException:
-                    retries += 1
-                    sleep(0.3)
-            else:
-                pass
-        except StaleElementReferenceException:
+            next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
+            next_page.click()
+            sleep(1)
+        except (StaleElementReferenceException,ElementClickInterceptedException):
             pass
         except (NoSuchElementException, TimeoutException):
             break
