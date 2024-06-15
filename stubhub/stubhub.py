@@ -39,7 +39,6 @@ def get_browser():
 def event_urls(browser):
     next_page = WebDriverWait(browser, 3).until(
                 EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]'))
-    browser.execute_script("arguments[0].scrollIntoView();", next_page)
     sleep(1)
     next_page.click()
     # while True:
