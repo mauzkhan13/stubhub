@@ -50,8 +50,9 @@ def event_urls(browser):
     browser.implicitly_wait(2)  # Wait for 2 seconds
         
     # Check if the "See more events" button is clickable
-    next_page = wait.until(EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]')))
+    # next_page = wait.until(EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]')))
     # print("Element found, attempting to click...")
+    next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
     print(next_page.text)
     # next_page.click()
     print("Clicked successfully.")
