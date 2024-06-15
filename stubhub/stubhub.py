@@ -18,6 +18,7 @@ import re
 import threading
 import concurrent.futures
 import requests
+from webdriver_manager.chrome import ChromeDriverManager
 
 def get_browser():
     options = Options()
@@ -29,7 +30,8 @@ def get_browser():
     # options.add_argument('--headless')
     options.add_argument('--window-size=1920,1080')
     options.binary_location = '/usr/bin/google-chrome' 
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    # driver = webdriver.Chrome(options=options)
     url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
     driver.get(url)
     driver.maximize_window()
