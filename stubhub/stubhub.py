@@ -149,7 +149,7 @@ def json_data(category, ticket_prices, sets_information, tickets_number):
     # with open(file_path, 'w') as f:
     #     f.write(json_data_cleaned)
         
-    print("The scraper is successfully finished")
+    # print("The scraper is successfully finished")
 
 if __name__ == '__main__':
     browser = get_browser()
