@@ -67,7 +67,7 @@ def event_urls(browser):
     print(next_pa.text)
     # next_pa.click()
     # print("Clicked successfully.")
-    texts = next_pa = browser.find_elements(By.XPATH, '(//div[@class="Panel Panel-Border EventListPanel"]/div)[22]')
+    texts = next_pa = browser.find_elements(By.XPATH, '(//div[@class="Panel Panel-Border EventListPanel"]/div)[22]/button')
     for t in texts:
         print(t.get_attribute('innerHTML'))
 
