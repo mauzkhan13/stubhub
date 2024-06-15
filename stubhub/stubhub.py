@@ -77,12 +77,12 @@ def event_urls(browser):
     #     action.move_to_element(t).perform()
     #     t.click()
     see_more_button = browser.find_element(By.XPATH, '//div//button[contains(text(), "See more events")]')
-
+    see_more_button.send_keys(Keys.ENTER)
     # Wait until the button is clickable
-    WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//div//button[contains(text(), "See more events")]')))
+    # WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//div//button[contains(text(), "See more events")]')))
    
     # Click the button
-    see_more_button.send_keys(Keys.ENTER)
+    
     sleep(5)
  
         
