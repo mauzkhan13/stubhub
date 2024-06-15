@@ -61,7 +61,7 @@ def event_urls(browser):
         url = link.get('href')
         complete_url = base_url + url
         events_links.append(complete_url)
-        print(events_links)
+    print(events_links)
         # print("Scraped all Events Link")
     
     return events_links
