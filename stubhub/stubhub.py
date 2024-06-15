@@ -35,24 +35,6 @@ def get_browser():
     return driver
 
 def event_urls(browser):
-    max_retries = 3
-    while True:
-        try:
-            retries = 0
-            while retries < max_retries:
-                try:
-                    scroll_page = browser.find_element(By.XPATH, '//button[@class="EventListPanel__Footer formatted-link__button-as-link"]')
-                    scroll_page.click()
-                    break
-                except ElementClickInterceptedException:
-                    retries += 1
-                    sleep(0.3)
-            else:
-                pass
-        except StaleElementReferenceException:
-            pass
-        except NoSuchElementException:
-            break
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
     divs = soup.find_all('a', {'class': 'cbt-redirection__link EventItem__TitleLink'})
