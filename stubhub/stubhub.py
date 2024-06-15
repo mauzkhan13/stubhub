@@ -53,7 +53,7 @@ def event_urls(browser):
     # next_page = wait.until(EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]')))
     # print("Element found, attempting to click...")
     next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
-    print(next_page.text)
+    print(next_page)
     # next_page.click()
     print("Clicked successfully.")
         
