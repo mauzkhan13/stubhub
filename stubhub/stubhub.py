@@ -38,7 +38,7 @@ def event_urls(browser):
     while True:
         try:
             next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
-            driver.execute_script("arguments[0].scrollIntoView();", next_page)
+            browser.execute_script("arguments[0].scrollIntoView();", next_page)
             sleep(0.5)
             print("Clicking on 'See more events'")
             next_page.click()
