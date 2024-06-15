@@ -141,7 +141,7 @@ def json_data(category, ticket_prices, sets_information, tickets_number):
     combined_data = existing_data + new_data
 
     json_data_cleaned = json.dumps(combined_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
-
+    print(json_data_cleaned)
     with open(file_path, 'w') as f:
         f.write(json_data_cleaned)
         
