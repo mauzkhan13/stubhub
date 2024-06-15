@@ -26,7 +26,7 @@ def get_browser():
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-logging')
     options.add_argument('--log-level=3')
-    options.add_argument('--headless')
+    # options.add_argument('--headless')
     
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=options)
