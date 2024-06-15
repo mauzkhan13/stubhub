@@ -26,16 +26,28 @@ def get_browser():
     options.add_argument('--disable-logging')
     options.add_argument('--log-level=3')
     options.add_argument('--headless')
+    options.add_argument('--window-size=1920,1080')
     options.binary_location = '/usr/bin/google-chrome' 
   
     driver = webdriver.Chrome(options=options)
     url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
     driver.get(url)
-    driver.maximize_window()
     print("Browser is successfully opened")
     return driver
 
 def event_urls(browser):
+    while True:
+    try:
+        next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
+        driver.execute_script("arguments[0].scrollIntoView();", next_page)
+        sleep(0.5)
+        next_page.click()
+        sleep(0.5)
+    except (StaleElementReferenceException,ElementClickInterceptedException):
+        pass
+    except (NoSuchElementException, TimeoutException):
+        break
+    
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
     divs = soup.find_all('a', {'class': 'cbt-redirection__link EventItem__TitleLink'})
