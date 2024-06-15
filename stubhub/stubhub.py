@@ -60,7 +60,7 @@ def event_urls(browser):
     # print("Element found, attempting to click...")
     next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
     print(next_page.text)
-    next_pa = browser.find_element(By.XPATH, '//div[@class="Panel__Footer"]/button')
+    next_pa = browser.find_element(By.XPATH, '//button[contains(@class, "EventListPanel__Footer") and contains(@class, "formatted-link__button-as-link")]')
     print(next_pa.text)
     # next_page.click()
     # print("Clicked successfully.")
@@ -68,14 +68,14 @@ def event_urls(browser):
     # for t in texts:
     #     print(t.get_attribute('innerHTML'))
 
-    try:
-        see_more_button = WebDriverWait(browser, 10).until(
-            EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "EventListPanel__Footer") and contains(@class, "formatted-link__button-as-link")]'))
-        )
-        browser.execute_script("arguments[0].scrollIntoView(true);", see_more_button)  # Scroll into view if necessary
-        see_more_button.click()
-    except Exception as e:
-        print(f"An error occurred: {e}")
+   
+    see_more_button = WebDriverWait(browser, 10).until(
+        EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "EventListPanel__Footer") and contains(@class, "formatted-link__button-as-link")]'))
+    )
+    browser.execute_script("arguments[0].scrollIntoView(true);", see_more_button)  # Scroll into view if necessary
+    see_more_button.click()
+    
+ 
         
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
