@@ -45,7 +45,6 @@ def get_browser():
 def event_urls(browser): 
     while True:
         try:
-            
             next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
             next_page.click()
             sleep(1)
@@ -60,9 +59,10 @@ def event_urls(browser):
         url = link.get('href')
         complete_url = base_url + url
         events_links.append(complete_url)
-        print("Scraped all Events Link")
+        print(events_links)
+        # print("Scraped all Events Link")
     return events_links
-print(events_links)
+
 def scrolling_page(browser):
     max_retries = 3
     while True:
