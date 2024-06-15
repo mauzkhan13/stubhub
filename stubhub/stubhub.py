@@ -106,6 +106,7 @@ def ticket_info(browser):
     return category, ticket_prices, sets_information, tickets_number
 
 def json_data(category, ticket_prices, sets_information, tickets_number):
+    print(len(category))
     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
     new_data = json.loads(df.to_json(orient='records'))
     
@@ -113,12 +114,12 @@ def json_data(category, ticket_prices, sets_information, tickets_number):
     
     json_data_cleaned = json.dumps(new_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
     headers = {'Content-Type': 'application/json'}
-    response = requests.post(save_data_url, data=json_data_cleaned, headers=headers)
-    if response.status_code == 200:
-        print(f'JSON Data successfully sent to the URL .{response.status_code}')
-    else:
-        print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
-    return True
+    # response = requests.post(save_data_url, data=json_data_cleaned, headers=headers)
+    # if response.status_code == 200:
+    #     print(f'JSON Data successfully sent to the URL .{response.status_code}')
+    # else:
+    #     print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
+    # return True
 
 if __name__ == '__main__':
     browser = get_browser()
