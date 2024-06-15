@@ -53,9 +53,11 @@ def event_urls(browser):
     # next_page = wait.until(EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]')))
     # print("Element found, attempting to click...")
     next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
-    print(next_page)
+    print(next_page.text)
+    next_pa = browser.find_element(By.XPATH, '//div[@class="Panel__Footer"]')
+    print(next_pa.text)
     # next_page.click()
-    print("Clicked successfully.")
+    # print("Clicked successfully.")
         
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
