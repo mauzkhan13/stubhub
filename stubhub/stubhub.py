@@ -43,14 +43,14 @@ def get_browser():
     return driver
 
 def event_urls(browser): 
-    while True:
-        try:
+    # while True:
+    #     try:
             
-            next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
-            next_page.click()
-            sleep(1)
-        except (NoSuchElementException, TimeoutException):
-            break
+    #         next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
+    #         next_page.click()
+    #         sleep(1)
+    #     except (NoSuchElementException, TimeoutException):
+    #         break
 
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
