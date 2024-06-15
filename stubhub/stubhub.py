@@ -139,8 +139,9 @@ def process_event(index, url):
     scrolling_page(browser)
     category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
     json_data(category, ticket_prices, sets_information, tickets_number)
+    print(f"Processing URL {index} is extracted json_data successfully")
     browser.quit()
-
+    
 if __name__ == '__main__':
     browser = get_browser()
     urls = event_urls(browser)
