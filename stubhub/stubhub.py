@@ -1,4 +1,3 @@
-
 from selenium import webdriver
 import threading
 import json
@@ -16,8 +15,7 @@ from time import sleep
 from bs4 import Tag
 from lxml import html
 import re
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+
 
 def get_browser():
     options = Options()
@@ -33,39 +31,21 @@ def get_browser():
     url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
     driver.get(url)
     driver.maximize_window()
-    
-    # website = "https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4"
-    # grid_url = "http://localhost:4444/wd/hub"
-    # driver = webdriver.Remote(command_executor=grid_url, options=options)
-    # driver.get(website)
-    # driver.maximize_window()
     print("Browser is successfully opened")
     return driver
+
 def event_urls(browser): 
-    # while True:
-    #     try:
-    #         next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
-    #         next_page.click()
-    #         sleep(1)
-    #     except (StaleElementReferenceException, ElementClickInterceptedException):
-    #         pass
-    #     except (NoSuchElementException, TimeoutException):
-    #         break
-    
+  
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
     divs = soup.find_all('a', {'class': 'cbt-redirection__link EventItem__TitleLink'})
     base_url = 'https://www.stubhub.ie/'
-    
     for link in divs[:1]:
         url = link.get('href')
         complete_url = base_url + url
         events_links.append(complete_url)
-    print(events_links)
-        # print("Scraped all Events Link")
-    
+    print(len(events_links))
     return events_links
-
 
 def scrolling_page(browser):
     max_retries = 3
@@ -127,29 +107,29 @@ def ticket_info(browser):
     return category, ticket_prices, sets_information, tickets_number
 
 def json_data(category, ticket_prices, sets_information, tickets_number):
+    print(len(category))
+
     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
-    print(len(category)
-    # file_path = r"C:\Users\Mauz Khan\Desktop\StubHub.json"
-    
-    # new_data = json.loads(df.to_json(orient='records'))
 
-    # if os.path.exists(file_path):
-    #     with open(file_path, 'r') as f:
-    #         try:
-    #             existing_data = json.load(f)
-    #         except json.JSONDecodeError:
-    #             existing_data = []
-    # else:
-    #     existing_data = []
+    file = r'E:\FPSSLLC'
+    filename = os.path.join(file + '\ Stub Hub.json')
+    new_data = json.loads(df.to_json(orient='records'))
 
-    # combined_data = existing_data + new_data
+    if os.path.exists(filename):
+        with open(filename, 'r') as f:
+            try:
+                existing_data = json.load(f)
+            except json.JSONDecodeError:
+                existing_data = []
+    else:
+        existing_data = []
 
-    # json_data_cleaned = json.dumps(combined_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
-    # print(json_data_cleaned)
-    # with open(file_path, 'w') as f:
-    #     f.write(json_data_cleaned)
-        
-    # print("The scraper is successfully finished")
+    combined_data = existing_data + new_data
+
+    json_data_cleaned = json.dumps(combined_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
+    print("The scraper is successfully finished")
+    with open(filename, 'w') as f:
+        f.write(json_data_cleaned)
 
 if __name__ == '__main__':
     browser = get_browser()
