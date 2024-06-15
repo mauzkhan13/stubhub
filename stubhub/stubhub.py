@@ -129,25 +129,25 @@ def ticket_info(browser):
 def json_data(category, ticket_prices, sets_information, tickets_number):
     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
     print(len(category)
-    file_path = r"C:\Users\Mauz Khan\Desktop\StubHub.json"
+    # file_path = r"C:\Users\Mauz Khan\Desktop\StubHub.json"
     
     new_data = json.loads(df.to_json(orient='records'))
 
-    if os.path.exists(file_path):
-        with open(file_path, 'r') as f:
-            try:
-                existing_data = json.load(f)
-            except json.JSONDecodeError:
-                existing_data = []
-    else:
-        existing_data = []
+    # if os.path.exists(file_path):
+    #     with open(file_path, 'r') as f:
+    #         try:
+    #             existing_data = json.load(f)
+    #         except json.JSONDecodeError:
+    #             existing_data = []
+    # else:
+    #     existing_data = []
 
     combined_data = existing_data + new_data
 
     json_data_cleaned = json.dumps(combined_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
     # print(json_data_cleaned)
-    with open(file_path, 'w') as f:
-        f.write(json_data_cleaned)
+    # with open(file_path, 'w') as f:
+    #     f.write(json_data_cleaned)
         
     print("The scraper is successfully finished")
 
