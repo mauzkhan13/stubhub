@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementClickInterceptedException,StaleElementReferenceException
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementClickInterceptedException, StaleElementReferenceException
 from bs4 import BeautifulSoup
 import pandas as pd
 import json
@@ -41,29 +41,31 @@ def get_browser():
     # driver.maximize_window()
     print("Browser is successfully opened")
     return driver
-
 def event_urls(browser): 
-   while True:
+    while True:
         try:
             next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
             next_page.click()
             sleep(1)
-        except (StaleElementReferenceException,ElementClickInterceptedException):
+        except (StaleElementReferenceException, ElementClickInterceptedException):
             pass
         except (NoSuchElementException, TimeoutException):
             break
-
+    
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
     divs = soup.find_all('a', {'class': 'cbt-redirection__link EventItem__TitleLink'})
     base_url = 'https://www.stubhub.ie/'
+    
     for link in divs[:1]:
         url = link.get('href')
         complete_url = base_url + url
         events_links.append(complete_url)
         print(events_links)
         # print("Scraped all Events Link")
+    
     return events_links
+
 
 def scrolling_page(browser):
     max_retries = 3
