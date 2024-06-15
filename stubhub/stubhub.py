@@ -61,20 +61,14 @@ def event_urls(browser):
     next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
     print(next_page.text)
     next_pa = browser.find_element(By.XPATH, '//button[contains(@class, "EventListPanel__Footer") and contains(@class, "formatted-link__button-as-link")]')
+    
     print(next_pa.text)
-    # next_page.click()
+    next_page.click()
     # print("Clicked successfully.")
     # texts = next_pa = browser.find_elements(By.XPATH, '//div[@class="Panel Panel-Border EventListPanel"]/div')
     # for t in texts:
     #     print(t.get_attribute('innerHTML'))
 
-   
-    see_more_button = WebDriverWait(browser, 10).until(
-        EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "EventListPanel__Footer") and contains(@class, "formatted-link__button-as-link")]'))
-    )
-    browser.execute_script("arguments[0].scrollIntoView(true);", see_more_button)  # Scroll into view if necessary
-    see_more_button.click()
-    
  
         
     events_links = []
