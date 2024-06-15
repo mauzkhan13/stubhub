@@ -47,7 +47,7 @@ def event_urls(browser):
     # except TimeoutException:
     #     print("Cookie modal overlay not found.")
     
-    browser.implicitly_wait(2)  # Wait for 2 seconds
+    # browser.implicitly_wait(2)  # Wait for 2 seconds
         
     # Check if the "See more events" button is clickable
     # next_page = wait.until(EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]')))
@@ -58,9 +58,12 @@ def event_urls(browser):
     print(next_pa.text)
     # next_page.click()
     # print("Clicked successfully.")
-    texts = next_pa = browser.find_elements(By.XPATH, '//div[@class="Panel Panel-Border EventListPanel"]/div')
-    for t in texts:
-        print(t.get_attribute('innerHTML'))
+    # texts = next_pa = browser.find_elements(By.XPATH, '//div[@class="Panel Panel-Border EventListPanel"]/div')
+    # for t in texts:
+    #     print(t.get_attribute('innerHTML'))
+
+    see_more_button = browser.find_element(By.XPATH, '//button[contains(@class, "EventListPanel__Footer") and contains(@class, "formatted-link__button-as-link")]')
+    see_more_button.click()
         
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
