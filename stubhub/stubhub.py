@@ -44,23 +44,22 @@ def event_urls(browser):
             )
             driver.execute_script("arguments[0].scrollIntoView();", next_page)
             sleep(0.5)
-            retries = 3
-            for attempt in range(retries):
-                try:
-                    next_page.click()
-                    sleep(0.5)
-                    break  
-                except (ElementClickInterceptedException, StaleElementReferenceException) as e:
-                    if attempt < retries - 1:
-                        sleep(0.5)
-                        driver.execute_script("arguments[0].scrollIntoView();", next_page)  # Scroll again
-                    else:
-                        raise e 
+            next_page.click()
+            # retries = 3
+            # for attempt in range(retries):
+            #     try:
+            #         next_page.click()
+            #         sleep(0.5)
+            #         break  
+            #     except (ElementClickInterceptedException, StaleElementReferenceException) as e:
+            #         if attempt < retries - 1:
+            #             sleep(0.5)
+            #             driver.execute_script("arguments[0].scrollIntoView();", next_page)  # Scroll again
+            #         else:
+            #             raise e 
         except (NoSuchElementException, TimeoutException):
             break 
-        except Exception as e:
-            print(f"An unexpected exception occurred: {e}")
-            break
+       
     
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
