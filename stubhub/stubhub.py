@@ -41,7 +41,6 @@ def event_urls(browser):
             next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
             browser.execute_script("arguments[0].scrollIntoView();", next_page)
             sleep(0.5)
-            browser.execute_script("arguments[0].click();", next_page)
             next_page.click()
             sleep(0.5)
         except (StaleElementReferenceException, ElementClickInterceptedException):
