@@ -37,14 +37,19 @@ def get_browser():
     return driver
 
 def event_urls(browser):
-    while True:
-        try:
-            next_page = WebDriverWait(browser, 3).until(
+    next_page = WebDriverWait(browser, 3).until(
                 EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]'))
-            )
-            browser.execute_script("arguments[0].scrollIntoView();", next_page)
-            sleep(0.5)
-            next_page.click()
+    browser.execute_script("arguments[0].scrollIntoView();", next_page)
+    sleep(1)
+    next_page.click()
+    # while True:
+    #     try:
+    #         next_page = WebDriverWait(browser, 3).until(
+    #             EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]'))
+    #         )
+            
+    #         sleep(0.5)
+            
             # retries = 3
             # for attempt in range(retries):
             #     try:
@@ -57,9 +62,9 @@ def event_urls(browser):
             #             driver.execute_script("arguments[0].scrollIntoView();", next_page)  # Scroll again
             #         else:
             #             raise e 
-        except (NoSuchElementException, TimeoutException):
-            print('raise an exception')
-            break 
+        # except (NoSuchElementException, TimeoutException):
+        #     print('raise an exception')
+        #     break 
        
     
     events_links = []
