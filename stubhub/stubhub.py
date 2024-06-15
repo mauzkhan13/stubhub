@@ -39,20 +39,21 @@ def get_browser():
 def event_urls(browser):
     wait = WebDriverWait(browser, 10)  # Wait up to 10 seconds
         
-    # Dismiss the cookie modal overlay if it exists
-    try:
-        cookie_overlay = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'cookieModal__overlay')))
-        browser.execute_script("arguments[0].click();", cookie_overlay)
-        print("Dismissed the cookie modal overlay.")
-    except TimeoutException:
-        print("Cookie modal overlay not found.")
+    # # Dismiss the cookie modal overlay if it exists
+    # try:
+    #     cookie_overlay = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'cookieModal__overlay')))
+    #     browser.execute_script("arguments[0].click();", cookie_overlay)
+    #     print("Dismissed the cookie modal overlay.")
+    # except TimeoutException:
+    #     print("Cookie modal overlay not found.")
     
     browser.implicitly_wait(2)  # Wait for 2 seconds
         
     # Check if the "See more events" button is clickable
     next_page = wait.until(EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]')))
-    print("Element found, attempting to click...")
-    next_page.click()
+    # print("Element found, attempting to click...")
+    print(next_page.text)
+    # next_page.click()
     print("Clicked successfully.")
         
     events_links = []
