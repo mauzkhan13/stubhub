@@ -67,13 +67,20 @@ def event_urls(browser):
     print(next_pa.text)
     # next_pa.click()
     # print("Clicked successfully.")
-    texts = next_pa = browser.find_elements(By.XPATH, '//div[@class="Panel__Footer"]')
-    for t in texts:
-        print(t.get_attribute('innerHTML'))
-        WebDriverWait(browser, 2).until(EC.visibility_of(t))
-        action = ActionChains(browser)
-        action.move_to_element(t).perform()
-        t.click()
+    # texts = next_pa = browser.find_elements(By.XPATH, '//div[@class="Panel__Footer"]')
+    # for t in texts:
+    #     print(t.get_attribute('innerHTML'))
+    #     WebDriverWait(browser, 2).until(EC.visibility_of(t))
+    #     action = ActionChains(browser)
+    #     action.move_to_element(t).perform()
+    #     t.click()
+    see_more_button = browser.find_element(By.XPATH, '//footer//button[contains(text(), "See more events")]')
+
+    # Wait until the button is clickable
+    WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//footer//button[contains(text(), "See more events")]')))
+   
+    # Click the button
+    see_more_button.click()
 
  
         
