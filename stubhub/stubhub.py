@@ -39,33 +39,8 @@ def get_browser():
 def event_urls(browser):
     next_page = WebDriverWait(browser, 3).until(
                 EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]'))
-   
     next_page.click()
-    # while True:
-    #     try:
-    #         next_page = WebDriverWait(browser, 3).until(
-    #             EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]'))
-    #         )
-            
-    #         sleep(0.5)
-            
-            # retries = 3
-            # for attempt in range(retries):
-            #     try:
-            #         next_page.click()
-            #         sleep(0.5)
-            #         break  
-            #     except (ElementClickInterceptedException, StaleElementReferenceException) as e:
-            #         if attempt < retries - 1:
-            #             sleep(0.5)
-            #             driver.execute_script("arguments[0].scrollIntoView();", next_page)  # Scroll again
-            #         else:
-            #             raise e 
-        # except (NoSuchElementException, TimeoutException):
-        #     print('raise an exception')
-        #     break 
-       
-    
+        
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
     divs = soup.find_all('a', {'class': 'cbt-redirection__link EventItem__TitleLink'})
