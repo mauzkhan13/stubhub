@@ -108,7 +108,7 @@ def ticket_info(browser):
     return category, ticket_prices, sets_information, tickets_number
 
 def json_data(category, ticket_prices, sets_information, tickets_number):
-    print(len(category))
+    print("Total Numbers of category", len(category))
     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
     new_data = json.loads(df.to_json(orient='records'))
     
@@ -130,7 +130,8 @@ if __name__ == '__main__':
 
     # for url in urls:
     for index, url in enumerate(urls):
-        print(f"Processing the URL No: {index}") 
+        print(f"Processing the URL No: {index}")
+        print(f"Event URL:{url}")
         browser = get_browser()
         browser.get(url)
         scrolling_page(browser)
