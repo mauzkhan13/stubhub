@@ -39,7 +39,7 @@ def get_browser():
 def event_urls(browser):
     next_page = WebDriverWait(browser, 3).until(
                 EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]'))
-    sleep(1)
+   
     next_page.click()
     # while True:
     #     try:
