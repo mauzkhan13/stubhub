@@ -17,6 +17,7 @@ from lxml import html
 import re
 import threading
 import concurrent.futures
+import requests
 
 def get_browser():
     options = Options()
@@ -120,28 +121,23 @@ def ticket_info(browser):
 
 def json_data(category, ticket_prices, sets_information, tickets_number):
     
-    print("Total Number of Category for the following URL:", len(category))
     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
-
-    file = r'E:\FPSSLLC'
-    filename = os.path.join(file + '\ Stub Hub.json')
     new_data = json.loads(df.to_json(orient='records'))
 
-    if os.path.exists(filename):
-        with open(filename, 'r') as f:
-            try:
-                existing_data = json.load(f)
-            except json.JSONDecodeError:
-                existing_data = []
-    else:
-        existing_data = []
-
-    combined_data = existing_data + new_data
-
-    json_data_cleaned = json.dumps(combined_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
+    save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
+    
+    json_data_cleaned = json.dumps(new_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
     print(json_data_cleaned)
-    with open(filename, 'w') as f:
-        f.write(json_data_cleaned)
+
+
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(save_data_url, data=json_data_cleaned, headers=headers)
+    if response.status_code == 200:
+        print('Data successfully sent to the server.')
+    else:
+        print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
+
+   
     return True
 
 
