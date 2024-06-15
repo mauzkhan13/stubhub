@@ -43,14 +43,14 @@ def get_browser():
     return driver
 
 def event_urls(browser): 
-    # while True:
-    #     try:
+    while True:
+        try:
             
-    #         next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
-    #         next_page.click()
-    #         sleep(1)
-    #     except (NoSuchElementException, TimeoutException):
-    #         break
+            next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
+            next_page.click()
+            sleep(1)
+        except (NoSuchElementException, TimeoutException):
+            break
 
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
@@ -62,7 +62,7 @@ def event_urls(browser):
         events_links.append(complete_url)
         print("Scraped all Events Link")
     return events_links
-
+print(events_links)
 def scrolling_page(browser):
     max_retries = 3
     while True:
@@ -141,7 +141,7 @@ def json_data(category, ticket_prices, sets_information, tickets_number):
     combined_data = existing_data + new_data
 
     json_data_cleaned = json.dumps(combined_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
-    print(json_data_cleaned)
+    # print(json_data_cleaned)
     with open(file_path, 'w') as f:
         f.write(json_data_cleaned)
         
