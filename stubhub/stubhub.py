@@ -21,7 +21,8 @@ import concurrent.futures
 import requests
 
 def get_browser():
-    display = Display(visible=1, size=(1920, 1080))
+    os.environ['DISPLAY'] = ':99.0'
+    display = Display(visible=0, size=(1920, 1080), backend='xvfb')
     display.start()
     options = Options()
     options.add_argument('--no-sandbox')
