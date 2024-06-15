@@ -58,6 +58,7 @@ def event_urls(browser):
             #         else:
             #             raise e 
         except (NoSuchElementException, TimeoutException):
+            print('raise an exception')
             break 
        
     
