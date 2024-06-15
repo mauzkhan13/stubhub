@@ -26,11 +26,16 @@ def get_browser():
     options.add_argument('--log-level=3')
     options.add_argument('--headless')
     
-    website = "https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4"
-    grid_url = "http://localhost:4444/wd/hub"
-    driver = webdriver.Remote(command_executor=grid_url, options=options)
-    driver.get(website)
+    driver = webdriver.Chrome(options=options)
+    url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
+    driver.get(url)
     driver.maximize_window()
+    
+    # website = "https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4"
+    # grid_url = "http://localhost:4444/wd/hub"
+    # driver = webdriver.Remote(command_executor=grid_url, options=options)
+    # driver.get(website)
+    # driver.maximize_window()
     print("Browser is successfully opened")
     return driver
 
