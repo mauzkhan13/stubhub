@@ -15,7 +15,7 @@ from time import sleep
 from bs4 import Tag
 from lxml import html
 import re
-
+import threading
 
 def get_browser():
     options = Options()
@@ -130,16 +130,27 @@ def json_data(category, ticket_prices, sets_information, tickets_number):
     with open(filename, 'w') as f:
         f.write(json_data_cleaned)
 
+
+
+def process_event(index, url):
+    print(f"Processing URL {index}: {url}")
+    browser = get_browser()
+    browser.get(url)
+    scrolling_page(browser)
+    category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
+    json_data(category, ticket_prices, sets_information, tickets_number)
+    browser.quit()
+
 if __name__ == '__main__':
     browser = get_browser()
     urls = event_urls(browser)
-    browser.quit() 
+    browser.quit()
 
-    for url in urls:
-        
-        browser = get_browser()
-        browser.get(url)
-        scrolling_page(browser)
-        category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
-        json_data(category, ticket_prices, sets_information, tickets_number)
-        browser.quit() 
+    threads = []
+    for index, url in enumerate(urls):
+        thread = threading.Thread(target=process_event, args=(index, url))
+        threads.append(thread)
+        thread.start()
+
+    for thread in threads:
+        thread.join()
