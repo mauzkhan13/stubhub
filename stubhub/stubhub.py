@@ -19,7 +19,7 @@ import re
 import threading
 import concurrent.futures
 import requests
-
+from selenium.webdriver.common.action_chains import ActionChains
 def get_browser():
    
     options = Options()
@@ -70,6 +70,9 @@ def event_urls(browser):
     texts = next_pa = browser.find_elements(By.XPATH, '(//div[@class="Panel Panel-Border EventListPanel"]/div)[22]/button')
     for t in texts:
         print(t.get_attribute('innerHTML'))
+        WebDriverWait(browser, 10).until(EC.visibility_of(t))
+        action = ActionChains(browser)
+        action.move_to_element(t).perform()
         t.click()
 
  
