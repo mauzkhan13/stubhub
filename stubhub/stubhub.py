@@ -128,7 +128,7 @@ def ticket_info(browser):
 
 def json_data(category, ticket_prices, sets_information, tickets_number):
     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
-    
+    print(len(category)
     file_path = r"C:\Users\Mauz Khan\Desktop\StubHub.json"
     
     new_data = json.loads(df.to_json(orient='records'))
