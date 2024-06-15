@@ -47,6 +47,9 @@ def event_urls(browser):
     except TimeoutException:
         print("Cookie modal overlay not found.")
     
+    browser.implicitly_wait(2)  # Wait for 2 seconds
+        
+    # Check if the "See more events" button is clickable
     next_page = wait.until(EC.element_to_be_clickable((By.XPATH, '(//*[contains(text(),"See more events")])[2]')))
     print("Element found, attempting to click...")
     next_page.click()
