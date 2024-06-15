@@ -122,22 +122,24 @@ def ticket_info(browser):
 def json_data(category, ticket_prices, sets_information, tickets_number):
     
     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
+    file_path = r"C:\Users\Mauz Khan\Desktop\stubhub.json"
     new_data = json.loads(df.to_json(orient='records'))
 
-    save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
-    
-    json_data_cleaned = json.dumps(new_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
-    print(json_data_cleaned)
-
-
-    headers = {'Content-Type': 'application/json'}
-    response = requests.post(save_data_url, data=json_data_cleaned, headers=headers)
-    if response.status_code == 200:
-        print('Data successfully sent to the server.')
+    if os.path.exists(file_path):
+        with open(file_path, 'r') as f:
+            try:
+                existing_data = json.load(f)
+            except json.JSONDecodeError:
+                existing_data = []
     else:
-        print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
+        existing_data = []
 
-   
+    combined_data = existing_data + new_data
+
+    json_data_cleaned = json.dumps(combined_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
+
+    with open(file_path, 'w') as f:
+        f.write(json_data_cleaned)
     return True
 
 
