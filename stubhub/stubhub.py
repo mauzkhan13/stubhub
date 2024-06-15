@@ -16,6 +16,7 @@ from bs4 import Tag
 from lxml import html
 import re
 import threading
+import concurrent.futures
 
 def get_browser():
     options = Options()
@@ -143,15 +144,25 @@ def process_event(index, url):
     browser.quit()
     
 if __name__ == '__main__':
-    browser = get_browser()
-    urls = event_urls(browser)
-    browser.quit()
+    urls = event_urls(get_browser())  # Instantiate a single browser instance
 
-    threads = []
-    for index, url in enumerate(urls):
-        thread = threading.Thread(target=process_event, args=(index, url))
-        threads.append(thread)
-        thread.start()
+    # Define the maximum number of threads
+    max_threads = 5
 
-    for thread in threads:
-        thread.join()
+    with concurrent.futures.ThreadPoolExecutor(max_threads) as executor:
+        executor.map(process_event, urls)
+
+    print("All event URLs have been processed.")
+# if __name__ == '__main__':
+#     browser = get_browser()
+#     urls = event_urls(browser)
+#     browser.quit()
+
+#     threads = []
+#     for index, url in enumerate(urls):
+#         thread = threading.Thread(target=process_event, args=(index, url))
+#         threads.append(thread)
+#         thread.start()
+
+#     for thread in threads:
+#         thread.join()
