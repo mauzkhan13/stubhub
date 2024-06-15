@@ -16,6 +16,8 @@ from time import sleep
 from bs4 import Tag
 from lxml import html
 import re
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 def get_browser():
     options = Options()
@@ -26,7 +28,8 @@ def get_browser():
     options.add_argument('--log-level=3')
     options.add_argument('--headless')
     
-    driver = webdriver.Chrome(options=options)
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
     url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
     driver.get(url)
     driver.maximize_window()
