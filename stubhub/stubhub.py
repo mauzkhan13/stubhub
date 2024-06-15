@@ -23,7 +23,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 from selenium.webdriver.common.keys import Keys
 def get_browser():
-    chromedriver_path = '/root/.wdm/drivers/chromedriver/linux64/126.0.6478.61/chromedriver-linux64/chromedriver'
+
     options = Options()
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-gpu')
@@ -35,9 +35,8 @@ def get_browser():
     options.binary_location = '/usr/bin/google-chrome' 
     
 
-    # Initialize Chrome WebDriver with the specified path
-    driver = webdriver.Chrome(executable_path=chromedriver_path, options=options)
-    # driver = webdriver.Chrome(options=options)
+ 
+    driver = webdriver.Chrome(options=options)
     url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
     driver.get(url)
     driver.maximize_window()
