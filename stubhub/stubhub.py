@@ -21,9 +21,7 @@ import concurrent.futures
 import requests
 
 def get_browser():
-    os.environ['DISPLAY'] = ':99.0'
-    display = Display(visible=0, size=(1920, 1080), backend='xvfb')
-    display.start()
+   
     options = Options()
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-gpu')
@@ -37,8 +35,7 @@ def get_browser():
     driver = webdriver.Chrome(options=options)
     url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
     driver.get(url)
-    sleep(3)
-    display.stop()
+    driver.execute_script("document.body.style.zoom='25%'")
     print("Browser is successfully opened")
     return driver
 
