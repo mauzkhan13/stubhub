@@ -20,6 +20,8 @@ import threading
 import concurrent.futures
 import requests
 from selenium.webdriver.common.action_chains import ActionChains
+
+from selenium.webdriver.common.keys import Keys
 def get_browser():
    
     options = Options()
@@ -80,8 +82,8 @@ def event_urls(browser):
     WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//div//button[contains(text(), "See more events")]')))
    
     # Click the button
-    see_more_button.click()
-
+    see_more_button.send_keys(Keys.ENTER)
+    sleep(5)
  
         
     events_links = []
