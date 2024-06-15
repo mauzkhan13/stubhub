@@ -62,8 +62,14 @@ def event_urls(browser):
     # for t in texts:
     #     print(t.get_attribute('innerHTML'))
 
-    see_more_button = browser.find_element(By.XPATH, '//button[contains(@class, "EventListPanel__Footer") and contains(@class, "formatted-link__button-as-link")]')
-    see_more_button.click()
+    try:
+        see_more_button = WebDriverWait(browser, 10).until(
+            EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "EventListPanel__Footer") and contains(@class, "formatted-link__button-as-link")]'))
+        )
+        browser.execute_script("arguments[0].scrollIntoView(true);", see_more_button)  # Scroll into view if necessary
+        see_more_button.click()
+    except Exception as e:
+        print(f"An error occurred: {e}")
         
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
