@@ -44,7 +44,7 @@ def event_urls(browser):
         url = link.get('href')
         complete_url = base_url + url
         events_links.append(complete_url)
-    print(len(events_links))
+   print("Total Number of Event Links:", len(events_links))
     return events_links
 
 def scrolling_page(browser):
@@ -107,8 +107,8 @@ def ticket_info(browser):
     return category, ticket_prices, sets_information, tickets_number
 
 def json_data(category, ticket_prices, sets_information, tickets_number):
-    print(len(category))
-
+    
+    print("Total Number of Category for the following URL:", len(category))
     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
 
     file = r'E:\FPSSLLC'
@@ -150,7 +150,7 @@ if __name__ == '__main__':
     urls = event_urls(get_browser())  # Instantiate a single browser instance
 
     # Define the maximum number of threads
-    max_threads = 5
+    max_threads = 10
 
     with concurrent.futures.ThreadPoolExecutor(max_threads) as executor:
         executor.map(process_event, urls)
