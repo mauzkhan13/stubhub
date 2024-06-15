@@ -60,7 +60,7 @@ def event_urls(browser):
     # print("Clicked successfully.")
     texts = next_pa = browser.find_elements(By.XPATH, '//div[@class="Panel Panel-Border EventListPanel"]/div')
     for t in texts:
-        print(t.text)
+        print(t.get_attribute('innerHTML'))
         
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
