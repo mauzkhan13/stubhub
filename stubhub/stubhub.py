@@ -35,6 +35,7 @@ def get_browser():
     driver = webdriver.Chrome(options=options)
     url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
     driver.get(url)
+    driver.maximize_window()
     driver.execute_script("document.body.style.zoom='25%'")
     print("Browser is successfully opened")
     return driver
