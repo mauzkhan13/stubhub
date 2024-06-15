@@ -41,6 +41,8 @@ def get_browser():
     return driver
 
 def event_urls(browser):
+   scroll_height = 1000  # You can adjust this value as needed
+   browser.execute_script(f"window.scrollBy(0, {scroll_height});")
     wait = WebDriverWait(browser, 10)  # Wait up to 10 seconds
         
     # # Dismiss the cookie modal overlay if it exists
