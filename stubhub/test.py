@@ -74,7 +74,7 @@ def event_urls(page):
         url = link.get('href')
         complete_url = base_url + url
         events_links.append(complete_url)
-   print(f"Total Number of Event Links: {len(events_links)}")
+    print(f"Total Number of Event Links: {len(events_links)}")
     return events_links
 
 def scrolling_page(driver):
