@@ -40,7 +40,7 @@ def get_browser():
 
 def event_urls(browser):   
     # wait = WebDriverWait(browser, 3)
-    time.sleep(1)
+    sleep(1)
     # cookie_accept_button = wait.until(EC.visibility_of_element_located((By.XPATH, '//button[contains(text(), "Accept")]')))
     cookie_accept_button = browser.find_element(By.XPATH, '//button[contains(text(), "Accept")]')
     if cookie_accept_button:
