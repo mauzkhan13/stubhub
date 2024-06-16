@@ -34,7 +34,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import ElementClickInterceptedException, NoSuchElementException, StaleElementReferenceException
 
 def run(playwright):
-    browser = playwright.chromium.launch(headless=False)
+    browser = playwright.chromium.launch(headless=True)
     page = browser.new_page()
     url = "https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4"
     page.goto(url)
@@ -44,7 +44,7 @@ def run(playwright):
 
 def event_urls(page):
     while True:
-        sleep(3)
+        sleep(1)
         try:
             cookie_accept_button = page.locator('button:has-text("Accept")')
             if cookie_accept_button.is_visible():
