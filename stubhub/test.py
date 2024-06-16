@@ -50,7 +50,6 @@ def event_urls(page):
             if cookie_accept_button.is_visible():
                 print("Accepting cookies")
                 cookie_accept_button.click()
-                time.sleep(1)
         except Exception as e:
             print(f"An exception occurred while handling cookie consent: {e}")
         try:
@@ -58,7 +57,7 @@ def event_urls(page):
             if next_page.is_visible():
                 next_page.click()
                 print("The next page is clicking")
-                time.sleep(0.3)
+                time.sleep(0.5)
             else:
                 break
         except Exception as e:
@@ -86,11 +85,11 @@ def scrolling_page(driver):
                 try:
                     scroll_page = driver.find_element(By.XPATH, '//div[@class="RoyalInfiniteScroll__Loader"]/div')
                     scroll_page.click()
-                    print("Scroll Page is clicking")
+                    # print("Scroll Page is clicking")
                     break
                 except ElementClickInterceptedException:
                     retries += 1
-                    sleep(0.3)
+                    sleep(0.1)
             else:
                 pass
         except StaleElementReferenceException:
