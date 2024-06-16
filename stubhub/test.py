@@ -39,7 +39,7 @@ def run(playwright):
     page = browser.new_page()
     url = "https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4"
     page.goto(url)
-    print("The Browser is opened")
+    print("The Main URL is opened in the Browser")
     page.wait_for_load_state()
     return browser, page 
 
@@ -70,11 +70,11 @@ def event_urls(page):
     soup = BeautifulSoup(html_content, 'lxml')
     divs = soup.find_all('a', {'class': 'cbt-redirection__link EventItem__TitleLink'})
     base_url = 'https://www.stubhub.ie/'
-    for link in divs:
+    for link in divs[:7]:
         url = link.get('href')
         complete_url = base_url + url
         events_links.append(complete_url)
-    print(len(events_links))
+   print(f"Total Number of Event Links: {len(events_links)}")
     return events_links
 
 def scrolling_page(driver):
@@ -109,6 +109,10 @@ def ticket_info(driver):
     sets_information = []
     tickets_number = []
     event_name = []
+    scrape_time = []
+
+    scrape_times = datetime.now().strftime('%H:%M:%S, %d-%m-%Y')
+    scrape_time.append(scrape_times)
     event_name.append(driver.find_element(By.XPATH, '//h1').text.strip())
     
     for card_element in card_elements:
@@ -135,27 +139,12 @@ def ticket_info(driver):
         else:
             tickets_number.append('N/A')
 
-    return event_name, category, ticket_prices, sets_information, tickets_number
+    return event_name,scrape_time, category, ticket_prices, sets_information, tickets_number
 
-# def json_data(event_name, category, ticket_prices, sets_information, tickets_number):
+def json_data(event_name,scrape_time, category, ticket_prices, sets_information, tickets_number):
+    
     print("Total Numbers of category", len(category))
-    
-#     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
-#     new_data = json.loads(df.to_json(orient='records'))
-    
-#     save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
-    
-#     json_data_cleaned = json.dumps(new_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
-#     headers = {'Content-Type': 'application/json'}
-#     response = requests.post(save_data_url, data=json_data_cleaned, headers=headers)
-#     if response.status_code == 200:
-#         print(f'JSON Data successfully sent to the URL .{response.status_code}')
-#     else:
-#         print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
-#     return True
-def json_data(event_name, category, ticket_prices, sets_information, tickets_number):
-
-    event_df = pd.DataFrame(zip(event_name), columns=['Event Name'])
+    event_df = pd.DataFrame(zip(event_name,scrape_time), columns=['Event Name', 'Scraped Time'])
     event_data = json.loads(event_df.to_json(orient='records'))
 
     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
@@ -170,7 +159,7 @@ def json_data(event_name, category, ticket_prices, sets_information, tickets_num
     final_json_data = json.dumps(combined_data)
     
     final_json_data_cleaned = final_json_data.replace('\n', '')
-    # print(final_json_data_cleaned)
+    print(final_json_data_cleaned)
 
     # save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
     # headers = {'Content-Type': 'application/json'}
@@ -205,7 +194,7 @@ if __name__ == '__main__':
             print(f"Processing URL: {url}")
             scrolling_page(driver)
 
-            event_name, category, ticket_prices, sets_information, tickets_number = ticket_info(driver)
-            json_data(event_name, category, ticket_prices, sets_information, tickets_number)
+            event_name,scrape_time, category, ticket_prices, sets_information, tickets_number = ticket_info(driver)
+            json_data(event_name, scrape_time,category, ticket_prices, sets_information, tickets_number)
             
         driver.quit()
