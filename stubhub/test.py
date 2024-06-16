@@ -1,5 +1,6 @@
 from playwright.sync_api import sync_playwright
 import time
+from bs4 import BeautifulSoup
 
 def run(playwright):
     browser = playwright.chromium.launch(headless=True)  # Use headless mode for server
@@ -32,6 +33,17 @@ def run(playwright):
         except Exception as e:
             print(f"An exception occurred: {e}")
             break
+
+    events_links = []
+    html_content = page.content()
+    soup = BeautifulSoup(html_content, 'lxml')
+    divs = soup.find_all('a', {'class': 'cbt-redirection__link EventItem__TitleLink'})
+    base_url = 'https://www.stubhub.ie/'
+    for link in divs:
+        url = link.get('href')
+        complete_url = base_url + url
+        events_links.append(complete_url)
+    print(len(events_links))
     browser.close()
 
 with sync_playwright() as playwright:
