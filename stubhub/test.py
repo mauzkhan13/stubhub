@@ -70,7 +70,7 @@ def event_urls(page):
     soup = BeautifulSoup(html_content, 'lxml')
     divs = soup.find_all('a', {'class': 'cbt-redirection__link EventItem__TitleLink'})
     base_url = 'https://www.stubhub.ie/'
-    for link in divs[:2]:
+    for link in divs:
         url = link.get('href')
         complete_url = base_url + url
         events_links.append(complete_url)
@@ -170,7 +170,7 @@ def json_data(event_name, category, ticket_prices, sets_information, tickets_num
     final_json_data = json.dumps(combined_data)
     
     final_json_data_cleaned = final_json_data.replace('\n', '')
-    print(final_json_data_cleaned)
+    # print(final_json_data_cleaned)
 
     # save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
     # headers = {'Content-Type': 'application/json'}
