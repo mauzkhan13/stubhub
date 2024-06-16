@@ -69,7 +69,7 @@ def event_urls(page):
     soup = BeautifulSoup(html_content, 'lxml')
     divs = soup.find_all('a', {'class': 'cbt-redirection__link EventItem__TitleLink'})
     base_url = 'https://www.stubhub.ie/'
-    for link in divs:
+    for link in divs[:10]:
         url = link.get('href')
         complete_url = base_url + url
         events_links.append(complete_url)
@@ -101,23 +101,55 @@ def clean_text(text):
     return text.replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
 
 def ticket_info(driver):
-    category = []
-    html_content = driver.page_source
-    soup = BeautifulSoup(html_content, 'html.parser')
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
     card_elements = soup.select('ul.RoyalTicketList__container > li')
-
+    category = []
+    ticket_prices = []
+    sets_information = []
+    tickets_number = []
+    
     for card_element in card_elements:
+        element = html.fromstring(str(card_element))
         cat = card_element.select_one('div.SectionRowSeat__sectionTitle.RoyalTicketListPanel__SectionName')
         category_text = clean_text(cat.text.strip()) if cat else 'N/A'
         category.append(category_text)
-    return category
 
-def json_data(category):
-    print(len(category))
-    df = pd.DataFrame(zip(category), columns=['Category'])
+        sets_info = card_element.select('span.SectionRowSeat__row')
+        if sets_info:
+            cleaned_sets_info = ' '.join([clean_text(set_no.text.replace('0','').strip()) for set_no in sets_info])
+            sets_information.append(cleaned_sets_info)
+        else:
+            sets_information.append('N/A')
+
+        price = card_element.select_one('div.PriceDisplay__price')
+        price_text = clean_text(price.text.strip()) if price else 'N/A'
+        ticket_prices.append(price_text)
+
+        tickets = element.xpath('//div[@class="RoyalTicketListPanel__SecondaryInfo"]/text()[normalize-space()]')
+        if tickets:
+            cleaned_tickets = ' '.join([clean_text(ticket.strip()) if isinstance(ticket, str) else clean_text(ticket.strip()) for ticket in tickets])
+            tickets_number.append(cleaned_tickets)
+        else:
+            tickets_number.append('N/A')
+
+    return category, ticket_prices, sets_information, tickets_number
+
+def json_data(category, ticket_prices, sets_information, tickets_number):
+    print("Total Numbers of category", len(category))
+    
+    df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
     new_data = json.loads(df.to_json(orient='records'))
-    json_data_cleaned = json.dumps(new_data).replace('\\u20ac', '')
-    print(json_data_cleaned)
+    
+    save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
+    
+    json_data_cleaned = json.dumps(new_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
+    # headers = {'Content-Type': 'application/json'}
+    # response = requests.post(save_data_url, data=json_data_cleaned, headers=headers)
+    # if response.status_code == 200:
+    #     print(f'JSON Data successfully sent to the URL .{response.status_code}')
+    # else:
+    #     print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
+    return True
 
 if __name__ == '__main__':
     with sync_playwright() as playwright:
