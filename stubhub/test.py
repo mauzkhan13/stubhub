@@ -70,7 +70,7 @@ def event_urls(page):
     soup = BeautifulSoup(html_content, 'lxml')
     divs = soup.find_all('a', {'class': 'cbt-redirection__link EventItem__TitleLink'})
     base_url = 'https://www.stubhub.ie/'
-    for link in divs[:7]:
+    for link in divs:
         url = link.get('href')
         complete_url = base_url + url
         events_links.append(complete_url)
