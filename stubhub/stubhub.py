@@ -40,13 +40,21 @@ def get_browser():
 
 def event_urls(browser):   
     # wait = WebDriverWait(browser, 3)
-    sleep(1)
-    # cookie_accept_button = wait.until(EC.visibility_of_element_located((By.XPATH, '//button[contains(text(), "Accept")]')))
-    cookie_accept_button = browser.find_element(By.XPATH, '//button[contains(text(), "Accept")]')
-    if cookie_accept_button:
-        print("Accepting cookies")
-        cookie_accept_button.click()
-        time.sleep(1)
+    sleep(3)
+    try:
+        # Locate the cookie consent button
+        cookie_button = driver.find_element(By.XPATH, '//*[text()="Accept"]')  # Update the XPath to match the cookie button
+        # Click the button
+        cookie_button.click()
+        print("Cookies accepted")
+    except Exception as e:
+        print("Cookie button not found or an error occurred:", e)
+    # # cookie_accept_button = wait.until(EC.visibility_of_element_located((By.XPATH, '//button[contains(text(), "Accept")]')))
+    # cookie_accept_button = browser.find_element(By.XPATH, '//button[contains(text(), "Accept")]')
+    # if cookie_accept_button:
+    #     print("Accepting cookies")
+    #     cookie_accept_button.click()
+    #     time.sleep(1)
 
     while True:
         try:
