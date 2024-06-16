@@ -127,16 +127,22 @@ if __name__ == '__main__':
         browser.close()
 
         options = Options()
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-gpu')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--disable-logging')
         options.add_argument('--log-level=3')
         options.add_argument('--headless')
+        options.add_argument('--window-size=1920,1080')
+        options.binary_location = '/usr/bin/google-chrome'
+        driver = webdriver.Chrome(options=options)
         print("Selenium Browser Opened")
         
         for index, url in enumerate(urls):
             print(f"Processing the URL No: {index}")
-            driver = webdriver.Chrome(options=options)
             driver.get(url)
             print(f"Processing URL: {url}")
             scrolling_page(driver)
             category = ticket_info(driver)
             json_data(category)
-            driver.quit()
+        driver.quit()
