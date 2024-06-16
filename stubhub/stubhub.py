@@ -49,16 +49,16 @@ def event_urls(browser):
         time.sleep(1)
 
     while True:
-    try:
-        next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
-        if next_page:
-            next_page.click()
-            print("The next page is clicking")
-            sleep(0.5)
-    except (StaleElementReferenceException, ElementClickInterceptedException):
-        pass
-    except (NoSuchElementException, TimeoutException):
-        break
+        try:
+            next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
+            if next_page:
+                next_page.click()
+                print("The next page is clicking")
+                sleep(0.5)
+        except (StaleElementReferenceException, ElementClickInterceptedException):
+            pass
+        except (NoSuchElementException, TimeoutException):
+            break
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
     divs = soup.find_all('a', {'class': 'cbt-redirection__link EventItem__TitleLink'})
