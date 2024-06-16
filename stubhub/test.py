@@ -2,7 +2,7 @@ from playwright.sync_api import sync_playwright
 import time
 
 def run(playwright):
-    browser = playwright.chromium.launch(headless=False)
+    browser = playwright.chromium.launch(headless=True)
     page = browser.new_page()
 
     url = "https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4"
