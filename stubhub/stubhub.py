@@ -39,6 +39,26 @@ def get_browser():
     return driver
 
 def event_urls(browser):   
+    # wait = WebDriverWait(browser, 3)
+    time.sleep(1)
+    # cookie_accept_button = wait.until(EC.visibility_of_element_located((By.XPATH, '//button[contains(text(), "Accept")]')))
+    cookie_accept_button = browser.find_element(By.XPATH, '//button[contains(text(), "Accept")]')
+    if cookie_accept_button:
+        print("Accepting cookies")
+        cookie_accept_button.click()
+        time.sleep(1)
+
+    while True:
+    try:
+        next_page = browser.find_element(By.XPATH, '(//*[contains(text(),"See more events")])[2]')
+        if next_page:
+            next_page.click()
+            print("The next page is clicking")
+            sleep(0.5)
+    except (StaleElementReferenceException, ElementClickInterceptedException):
+        pass
+    except (NoSuchElementException, TimeoutException):
+        break
     events_links = []
     soup = BeautifulSoup(browser.page_source, 'lxml')
     divs = soup.find_all('a', {'class': 'cbt-redirection__link EventItem__TitleLink'})
@@ -116,12 +136,12 @@ def json_data(category, ticket_prices, sets_information, tickets_number):
     
     json_data_cleaned = json.dumps(new_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
     headers = {'Content-Type': 'application/json'}
-    response = requests.post(save_data_url, data=json_data_cleaned, headers=headers)
-    if response.status_code == 200:
-        print(f'JSON Data successfully sent to the URL .{response.status_code}')
-    else:
-        print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
-    return True
+    # response = requests.post(save_data_url, data=json_data_cleaned, headers=headers)
+    # if response.status_code == 200:
+    #     print(f'JSON Data successfully sent to the URL .{response.status_code}')
+    # else:
+    #     print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
+    # return True
 
 if __name__ == '__main__':
     browser = get_browser()
