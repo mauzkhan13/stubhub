@@ -43,7 +43,7 @@ def event_urls(browser):
     sleep(3)
     try:
         # Locate the cookie consent button
-        cookie_button = driver.find_element(By.XPATH, '//*[text()="Accept"]')  # Update the XPath to match the cookie button
+        cookie_button = browser.find_element(By.XPATH, '//*[text()="Accept"]')  # Update the XPath to match the cookie button
         # Click the button
         cookie_button.click()
         print("Cookies accepted")
