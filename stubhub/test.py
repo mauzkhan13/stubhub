@@ -86,7 +86,7 @@ def scrolling_page(driver):
                 try:
                     scroll_page = driver.find_element(By.XPATH, '//div[@class="RoyalInfiniteScroll__Loader"]/div')
                     scroll_page.click()
-                    # print("Scroll Page is clicking")
+                    print("Scroll Page is clicking")
                     break
                 except ElementClickInterceptedException:
                     retries += 1
