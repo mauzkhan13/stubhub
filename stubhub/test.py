@@ -138,7 +138,7 @@ def ticket_info(driver):
     return event_name, category, ticket_prices, sets_information, tickets_number
 
 # def json_data(event_name, category, ticket_prices, sets_information, tickets_number):
-#     print("Total Numbers of category", len(category))
+    print("Total Numbers of category", len(category))
     
 #     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
 #     new_data = json.loads(df.to_json(orient='records'))
