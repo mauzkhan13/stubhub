@@ -174,6 +174,8 @@ if __name__ == '__main__':
             driver.get(url)
             print(f"Processing URL: {url}")
             scrolling_page(driver)
-            category = ticket_info(driver)
-            json_data(category)
+
+            category, ticket_prices, sets_information, tickets_number = ticket_info(driver)
+            json_data(category, ticket_prices, sets_information, tickets_number)
+            
         driver.quit()
