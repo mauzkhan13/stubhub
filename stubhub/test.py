@@ -58,7 +58,7 @@ def event_urls(page):
             if next_page.is_visible():
                 next_page.click()
                 print("The next page is clicking")
-                time.sleep(1)
+                time.sleep(0.3)
             else:
                 break
         except Exception as e:
