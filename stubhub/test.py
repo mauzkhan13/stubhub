@@ -57,7 +57,7 @@ def event_urls(page):
             next_page = page.locator('(//*[contains(text(),"See more events")])[2]')
             if next_page.is_visible():
                 next_page.click()
-                # print("The next page is clicking")
+                print("The next page is clicking")
                 time.sleep(0.5)
             else:
                 break
