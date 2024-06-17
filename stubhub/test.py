@@ -57,7 +57,7 @@ def event_urls(page):
             next_page = page.locator('(//*[contains(text(),"See more events")])[2]')
             if next_page.is_visible():
                 next_page.click()
-                print("The next page is clicking")
+                # print("The next page is clicking")
                 time.sleep(0.5)
             else:
                 break
@@ -159,15 +159,16 @@ def json_data(event_name,scrape_time, category, ticket_prices, sets_information,
     final_json_data = json.dumps(combined_data)
     
     final_json_data_cleaned = final_json_data.replace('\n', '')
-    print(final_json_data_cleaned)
+    # print(final_json_data_cleaned)
 
-    # save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
-    # headers = {'Content-Type': 'application/json'}
-    # response = requests.post(save_data_url, data=final_json_data_cleaned, headers=headers)
-    # if response.status_code == 200:
-    #     print(f'Data successfully sent to the server.{response.status_code}')
-    # else:
-    #     print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
+    save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
+    
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(save_data_url, data=final_json_data_cleaned, headers=headers)
+    if response.status_code == 200:
+        print(f'Data successfully sent to the server.{response.status_code}')
+    else:
+        print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
    
     return True
 if __name__ == '__main__':
