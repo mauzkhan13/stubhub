@@ -137,12 +137,12 @@ def process_url(index, url):
     browser = get_browser()
     try:
         browser.get(url)
-        scrolling_page(browser)
+        # scrolling_page(browser)
         category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
         json_data(category, ticket_prices, sets_information, tickets_number)
     finally:
         browser.quit()
-    print(f"Thread {threading.current_thread().name} finished processing index {index}")
+    
 
 def main():
     urls = event_urls()
