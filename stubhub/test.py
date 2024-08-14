@@ -136,13 +136,13 @@ def json_data(category, ticket_prices, sets_information, tickets_number):
 def process_url(index, url):
     print(f"Thread {threading.current_thread().name} processing index {index}: {url}")
     browser = get_browser()
-    try:
-        browser.get(url)
-        # scrolling_page(browser)
-        category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
-        json_data(category, ticket_prices, sets_information, tickets_number)
-    finally:
-        browser.quit()
+    # try:
+    browser.get(url)
+    # scrolling_page(browser)
+    category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
+    json_data(category, ticket_prices, sets_information, tickets_number)
+    # finally:
+    browser.quit()
     
 
 def main():
