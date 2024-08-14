@@ -33,9 +33,10 @@ def get_browser():
     options.add_argument('--disable-logging')
     options.add_argument('--log-level=3')
     options.add_argument('--headless')
-    options.binary_location = '/usr/bin/chromedriver' 
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+    # options.binary_location = '/usr/bin/chromedriver' 
     # try:
-    driver = webdriver.Chrome(options=options)
+    # driver = webdriver.Chrome(options=options)
     #     print('driver is working')
     # except:
         # print('Need to install chrome driver is working')
