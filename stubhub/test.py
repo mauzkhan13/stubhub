@@ -32,10 +32,13 @@ def get_browser():
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-logging')
     options.add_argument('--log-level=3')
-    # options.add_argument('--headless')
+    options.add_argument('--headless')
     # options.binary_location = '/usr/bin/google-chrome' 
     # options.binary_location = '/usr/bin/google-chrome-stable'
-    driver = webdriver.Chrome(options=options)
+    # driver = webdriver.Chrome(options=options)
+    options.binary_location = '/usr/bin/google-chrome' 
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
     driver.maximize_window()
     print('Browser is opened')
     return driver
