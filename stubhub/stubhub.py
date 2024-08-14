@@ -47,9 +47,9 @@ def get_browser():
     options.add_argument('--log-level=3')
     options.add_argument('--headless')
     options.binary_location = '/usr/bin/google-chrome' 
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
-    # driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    # service = Service(ChromeDriverManager().install())
+    # driver = webdriver.Chrome(service=service, options=options)
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
     # driver = webdriver.Chrome(options=options)
     driver.maximize_window()
     print("Browser is successfully opened")
