@@ -34,13 +34,14 @@ def get_browser():
     options.add_argument('--log-level=3')
     options.add_argument('--headless')
     options.binary_location = '/usr/bin/google-chrome' 
-    try:
-        driver = webdriver.Chrome(options=options)
-        print('driver is working')
-    except:
-        print('Need to install chrome driver is working')
-        service = Service(ChromeDriverManager().install())
-        driver = webdriver.Chrome(service=service, options=options)
+    # try:
+    #     driver = webdriver.Chrome(options=options)
+    #     print('driver is working')
+    # except:
+        # print('Need to install chrome driver is working')
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
+    print('driver is working')
     # driver = webdriver.Chrome(options=options)
     # url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
     # driver.get(url)
