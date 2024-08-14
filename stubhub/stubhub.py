@@ -47,8 +47,10 @@ def get_browser():
     options.add_argument('--log-level=3')
     options.add_argument('--headless')
     options.binary_location = '/usr/bin/google-chrome' 
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
     # driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-    driver = webdriver.Chrome(options=options)
+    # driver = webdriver.Chrome(options=options)
     driver.maximize_window()
     print("Browser is successfully opened")
     return driver
@@ -171,16 +173,37 @@ def json_data(event_name,scrape_time, category, ticket_prices, sets_information,
         print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
     return True
 
-if __name__ == '__main__':
-    urls = event_urls()
+def process_url(index, url):
+    print(f"Processing URL NO {index}: {url}")
     browser = get_browser()
-    for url in urls[:1]:
+    try:
         browser.get(url)
         scrolling_page(browser)
-        event_name,scrape_time, category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
-        json_data(event_name,scrape_time, category, ticket_prices, sets_information, tickets_number)
+        category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
+        json_data(category, ticket_prices, sets_information, tickets_number)
+    finally:
+        browser.quit()
+
+def main():
+    urls = event_urls()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+        futures = [executor.submit(process_url, index, url) for index, url in enumerate(urls)]
+        concurrent.futures.wait(futures)
+if __name__ == "__main__":
+    main()
+
+
+
+# if __name__ == '__main__':
+#     urls = event_urls()
+#     browser = get_browser()
+#     for url in urls[:1]:
+#         browser.get(url)
+#         scrolling_page(browser)
+#         event_name,scrape_time, category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
+#         json_data(event_name,scrape_time, category, ticket_prices, sets_information, tickets_number)
         
-    browser.quit()
+#     browser.quit()
 # def process_event(url):
 #     browser = get_browser()  # Instantiate a new browser
 #     browser.get(url)
