@@ -39,8 +39,9 @@ def get_browser():
     # driver = webdriver.Chrome(options=options)
     # url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
     # driver.get(url)
-    driver.maximize_window()
     print("Browser is successfully opened")
+    driver.maximize_window()
+    
     return driver
 
 def event_urls():
@@ -71,7 +72,7 @@ def scrolling_page(browser):
                 try:
                     scroll_page = browser.find_element(By.XPATH, '//div[@class="RoyalInfiniteScroll__Loader"]/div')
                     print('scrolling')
-                    scroll_page.click()
+                    # scroll_page.click()
                     break
                 except ElementClickInterceptedException:
                     try:
