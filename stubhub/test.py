@@ -134,25 +134,36 @@ def json_data(category, ticket_prices, sets_information, tickets_number):
 
 
 def process_url(index, url):
-    print(f"Thread {threading.current_thread().name} processing index {index}: {url}")
+    print(f"Processing URL No {index}: {url}")
     browser = get_browser()
-    # try:
-    browser.get(url)
-    # scrolling_page(browser)
-    category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
-    json_data(category, ticket_prices, sets_information, tickets_number)
-    # finally:
-    browser.quit()
-    
+    try:
+        browser.get(url)
+        print(f"Successfully opened URL: {url}")
+        
+        scrolling_page(browser)
+        print("Finished scrolling the page")
+        
+        category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
+        print("Extracted ticket information")
+        
+        json_data(category, ticket_prices, sets_information, tickets_number)
+        print("Processed ticket information into JSON")
+        
+    except Exception as e:
+        print(f"Error processing URL {url}: {e}")
+    finally:
+        browser.quit()
 
 def main():
     urls = event_urls()
     
-    # print(f"URLs retrieved: {urls}") 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
         futures = [executor.submit(process_url, index, url) for index, url in enumerate(urls)]
-        # futures = [executor.submit(process_url, urls) for i in range(len(urls))]
         concurrent.futures.wait(futures)
+
 if __name__ == "__main__":
     main()
+
+
+
 
