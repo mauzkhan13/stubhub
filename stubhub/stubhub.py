@@ -68,7 +68,7 @@ def event_urls():
     records = worksheet.get_all_records()
     df = pd.DataFrame(records)
     events_links = df
-    print((events_links))
+    # print((events_links))
     return events_links
     
 def scrolling_page(browser):
