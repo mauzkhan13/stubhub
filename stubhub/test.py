@@ -167,7 +167,7 @@ def process_url(index, url):
         category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
         # print("Extracted ticket information")
         
-        json_data(category, ticket_prices, sets_information, tickets_number)
+        json_data(url, category, ticket_prices, sets_information, tickets_number)
         # print("Processed ticket information into JSON")
         
     except Exception as e:
