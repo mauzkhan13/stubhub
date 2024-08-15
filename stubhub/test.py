@@ -34,6 +34,7 @@ def get_browser():
     options.add_argument('--disable-logging')
     options.add_argument('--log-level=3')
     options.add_argument('--headless')
+    
     options.binary_location = '/usr/bin/chromedriver' 
     SCRAPEOPS_API_KEY = '9b366c44-ef9f-4537-b376-90614f2a65de'
     proxy_options = {
@@ -44,9 +45,9 @@ def get_browser():
         }
     }
     try:
-        driver = webdriver.Chrome(options=options,seleniumwire_options=proxy_options)
+        driver = webdriver.Chrome(options=options)
     except:
-        driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options,seleniumwire_options=proxy_options)
+        driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options)
         print(f"ChromeDriver installed at: {chromedriver_path}")
     driver.maximize_window()
     return driver
