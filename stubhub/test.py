@@ -60,7 +60,7 @@ def get_browser():
     # driver = webdriver.Chrome(options=options)
     # url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
     # driver.get(url)
-    print("Browser is successfully opened")
+    # print("Browser is successfully opened")
     driver.maximize_window()
     
     return driver
@@ -92,7 +92,7 @@ def scrolling_page(browser):
             while retries < max_retries:
                 try:
                     scroll_page = browser.find_element(By.XPATH, '//div[@class="RoyalInfiniteScroll__Loader"]/div')
-                    print('scrolling')
+                    # print('scrolling')
                     scroll_page.click()
                     break
                 except ElementClickInterceptedException:
