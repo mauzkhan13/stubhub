@@ -145,10 +145,38 @@ def ticket_info(browser):
 
     return category, ticket_prices, sets_information, tickets_number
 
-def json_data(url, category, ticket_prices, sets_information, tickets_number):
-    print(f"Total Numbers of category", len(category), {url})
-    df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
+# def json_data(url, category, ticket_prices, sets_information, tickets_number):
+#     print(f"Total Numbers of category", len(category), {url})
+#     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
 
+def json_data(url,event_name,scrape_time, category, ticket_prices, sets_information, tickets_number):
+    print(f"Total Numbers of category", len(category), {url})
+    event_df = pd.DataFrame(zip(event_name,scrape_time), columns=['Event Name', 'Scraped Time'])
+    event_data = json.loads(event_df.to_json(orient='records'))
+
+    df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
+    new_data = json.loads(df.to_json(orient='records'))
+    
+    json_data_cleaned_str = json.dumps(new_data).replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
+
+    json_data_cleaned = json.loads(json_data_cleaned_str)
+    
+    combined_data = event_data + json_data_cleaned
+    
+    final_json_data = json.dumps(combined_data)
+    
+    final_json_data_cleaned = final_json_data.replace('\n', '')
+    # print(final_json_data_cleaned)
+
+    save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
+    
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(save_data_url, data=final_json_data_cleaned, headers=headers)
+    if response.status_code == 200:
+        print(f'Data successfully sent to the server.{response.status_code}')
+    else:
+        print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
+    return True
 
 def process_url(index, url):
     print(f"Processing URL No {index}: {url}")
@@ -163,7 +191,8 @@ def process_url(index, url):
         category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
         # print("Extracted ticket information")
         
-        json_data(url, category, ticket_prices, sets_information, tickets_number)
+        # json_data(url, category, ticket_prices, sets_information, tickets_number)
+        json_data(url,event_name,scrape_time, category, ticket_prices, sets_information, tickets_number)
         # print("Processed ticket information into JSON")
         
     except Exception as e:
