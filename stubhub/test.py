@@ -18,6 +18,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, ElementClickInterceptedException, StaleElementReferenceException
 import pymysql
 from datetime import datetime
+import re
+import time
+import json
+import os
 
 
 def get_browser():
