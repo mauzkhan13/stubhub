@@ -107,27 +107,74 @@ def scrolling_page(browser):
         except NoSuchElementException:
             break
 
+# def clean_text(text):
+#     return text.replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
+
+# def ticket_info(browser):
+
+#     soup = BeautifulSoup(browser.page_source, 'html.parser')
+#     card_elements = soup.select('ul.RoyalTicketList__container > li')
+#     category = []
+#     ticket_prices = []
+#     sets_information = []
+#     tickets_number = []
+#     for card_element in card_elements:
+#         element = html.fromstring(str(card_element))
+
+#         cat = card_element.select_one('div.SectionRowSeat__sectionTitle.RoyalTicketListPanel__SectionName')
+#         category_text = clean_text(cat.text.strip()) if cat else 'N/A'
+#         category.append(category_text)
+
+#         sets_info = card_element.select('span.SectionRowSeat__row')
+#         if sets_info:
+#             cleaned_sets_info = ' '.join([clean_text(set_no.text.replace('0','').strip()) for set_no in sets_info])
+#             sets_information.append(cleaned_sets_info)
+#         else:
+#             sets_information.append('N/A')
+
+#         price = card_element.select_one('div.PriceDisplay__price')
+#         price_text = clean_text(price.text.strip()) if price else 'N/A'
+#         ticket_prices.append(price_text)
+
+#         tickets = element.xpath('//div[@class="RoyalTicketListPanel__SecondaryInfo"]/text()[normalize-space()]')
+#         if tickets:
+#             cleaned_tickets = ' '.join([clean_text(ticket.strip()) if isinstance(ticket, str) else clean_text(ticket.strip()) for ticket in tickets])
+#             tickets_number.append(cleaned_tickets)
+#         else:
+#             tickets_number.append('N/A')
+
+#     return category, ticket_prices, sets_information, tickets_number
+
+# def json_data(url, category, ticket_prices, sets_information, tickets_number):
+#     print(f"Total Numbers of category", len(category), {url})
+#     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
+
 def clean_text(text):
-    return text.replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
+    return re.sub(r'\s+', ' ', text).strip()
 
-def ticket_info(browser):
-
-    soup = BeautifulSoup(browser.page_source, 'html.parser')
+def ticket_info(driver):
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
     card_elements = soup.select('ul.RoyalTicketList__container > li')
     category = []
     ticket_prices = []
     sets_information = []
     tickets_number = []
+    event_name = []
+    scrape_time = []
+
+    scrape_times = datetime.now().strftime('%H:%M:%S, %d-%m-%Y')
+    scrape_time.append(scrape_times)
+    event_name.append(driver.find_element(By.XPATH, '//h1').text.strip())
+    
     for card_element in card_elements:
         element = html.fromstring(str(card_element))
-
         cat = card_element.select_one('div.SectionRowSeat__sectionTitle.RoyalTicketListPanel__SectionName')
         category_text = clean_text(cat.text.strip()) if cat else 'N/A'
         category.append(category_text)
 
         sets_info = card_element.select('span.SectionRowSeat__row')
         if sets_info:
-            cleaned_sets_info = ' '.join([clean_text(set_no.text.replace('0','').strip()) for set_no in sets_info])
+            cleaned_sets_info = ' '.join([clean_text(set_no.text) for set_no in sets_info])
             sets_information.append(cleaned_sets_info)
         else:
             sets_information.append('N/A')
@@ -143,11 +190,7 @@ def ticket_info(browser):
         else:
             tickets_number.append('N/A')
 
-    return category, ticket_prices, sets_information, tickets_number
-
-# def json_data(url, category, ticket_prices, sets_information, tickets_number):
-#     print(f"Total Numbers of category", len(category), {url})
-#     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
+    return event_name,scrape_time, category, ticket_prices, sets_information, tickets_number
 
 def json_data(url,event_name,scrape_time, category, ticket_prices, sets_information, tickets_number):
     print(f"Total Numbers of category", len(category), {url})
@@ -187,8 +230,8 @@ def process_url(index, url):
         
         scrolling_page(browser)
         # print("Finished scrolling the page")
-        
-        category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
+        event_name,scrape_time, category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
+        # category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
         # print("Extracted ticket information")
         
         # json_data(url, category, ticket_prices, sets_information, tickets_number)
