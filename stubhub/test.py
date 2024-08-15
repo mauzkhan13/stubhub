@@ -45,7 +45,8 @@ def get_browser():
         }
     }
     try:
-        driver = webdriver.Chrome(options=options)
+        driver = webdriver.Chrome(options=options,seleniumwire_options=proxy_options)
+        # driver = webdriver.Chrome(options=options)
     except:
         driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options)
         print(f"ChromeDriver installed at: {chromedriver_path}")
