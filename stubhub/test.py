@@ -33,7 +33,7 @@ api_file  = {
 
 def get_browser():
     chromedriver_path = ChromeDriverManager().install()
-    print(f"ChromeDriver installed at: {chromedriver_path}")
+   
     options = Options()
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-gpu')
@@ -41,11 +41,14 @@ def get_browser():
     options.add_argument('--disable-logging')
     options.add_argument('--log-level=3')
     options.add_argument('--headless')
-
-    driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options)
-    
+    options.binary_location = '/usr/bin/chromedriver' 
+    try:
+        driver = webdriver.Chrome(options=options)
+    except:
+        driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options)
+        print(f"ChromeDriver installed at: {chromedriver_path}")
     # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-    # options.binary_location = '/usr/bin/chromedriver' 
+    
     # try:
     # driver = webdriver.Chrome(options=options)
     #     print('driver is working')
@@ -175,7 +178,7 @@ def process_url(index, url):
 def main():
     urls = event_urls()
     
-    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
         futures = [executor.submit(process_url, index, url) for index, url in enumerate(urls)]
         concurrent.futures.wait(futures)
 
