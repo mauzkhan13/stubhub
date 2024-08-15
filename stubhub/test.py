@@ -10,6 +10,8 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from lxml import html
 from time import sleep
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 
 api_file  = {
     "type": "service_account",
@@ -26,6 +28,8 @@ api_file  = {
   }
 
 def get_browser():
+    chromedriver_path = ChromeDriverManager().install()
+    print(f"ChromeDriver installed at: {chromedriver_path}")
     options = Options()
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-gpu')
@@ -33,7 +37,10 @@ def get_browser():
     options.add_argument('--disable-logging')
     options.add_argument('--log-level=3')
     options.add_argument('--headless')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+
+    driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options)
+    
+    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     # options.binary_location = '/usr/bin/chromedriver' 
     # try:
     # driver = webdriver.Chrome(options=options)
@@ -42,7 +49,7 @@ def get_browser():
         # print('Need to install chrome driver is working')
     # service = Service(ChromeDriverManager().install())
     # driver = webdriver.Chrome(service=service, options=options)
-    print('driver is working')
+    # print('driver is working')
     # driver = webdriver.Chrome(options=options)
     # url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
     # driver.get(url)
