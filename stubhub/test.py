@@ -90,7 +90,7 @@ def scrolling_page(browser):
                 try:
                     scroll_page = browser.find_element(By.XPATH, '//div[@class="RoyalInfiniteScroll__Loader"]/div')
                     print('scrolling')
-                    # scroll_page.click()
+                    scroll_page.click()
                     break
                 except ElementClickInterceptedException:
                     try:
@@ -156,16 +156,16 @@ def process_url(index, url):
     browser = get_browser()
     try:
         browser.get(url)
-        print(f"Successfully opened URL: {url}")
+        # print(f"Successfully opened URL: {url}")
         
         scrolling_page(browser)
-        print("Finished scrolling the page")
+        # print("Finished scrolling the page")
         
         category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
-        print("Extracted ticket information")
+        # print("Extracted ticket information")
         
         json_data(category, ticket_prices, sets_information, tickets_number)
-        print("Processed ticket information into JSON")
+        # print("Processed ticket information into JSON")
         
     except Exception as e:
         print(f"Error processing URL {url}: {e}")
