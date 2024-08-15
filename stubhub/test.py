@@ -149,8 +149,8 @@ def ticket_info(browser):
 
     return category, ticket_prices, sets_information, tickets_number
 
-def json_data(category, ticket_prices, sets_information, tickets_number):
-    print("Total Numbers of category", len(category))
+def json_data(url, category, ticket_prices, sets_information, tickets_number):
+    print(f"Total Numbers of category", len(category), {url})
     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
 
 
@@ -178,7 +178,7 @@ def process_url(index, url):
 def main():
     urls = event_urls()
     
-    with concurrent.futures.ThreadPoolExecutor(max_workers=15) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         futures = [executor.submit(process_url, index, url) for index, url in enumerate(urls)]
         concurrent.futures.wait(futures)
 
