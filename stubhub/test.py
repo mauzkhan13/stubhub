@@ -35,27 +35,20 @@ def get_browser():
     options.add_argument('--log-level=3')
     options.add_argument('--headless')
     options.binary_location = '/usr/bin/chromedriver' 
+    SCRAPEOPS_API_KEY = '9b366c44-ef9f-4537-b376-90614f2a65de'
+    proxy_options = {
+        'proxy': {
+            'http': f'http://scrapeops.headless_browser_mode=true:{SCRAPEOPS_API_KEY}@proxy.scrapeops.io:5353',
+            'https': f'http://scrapeops.headless_browser_mode=true:{SCRAPEOPS_API_KEY}@proxy.scrapeops.io:5353',
+            'no_proxy': 'localhost:127.0.0.1'
+        }
+    }
     try:
-        driver = webdriver.Chrome(options=options)
+        driver = webdriver.Chrome(options=options,seleniumwire_options=proxy_options)
     except:
-        driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options)
+        driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options,seleniumwire_options=proxy_options)
         print(f"ChromeDriver installed at: {chromedriver_path}")
-    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-    
-    # try:
-    # driver = webdriver.Chrome(options=options)
-    #     print('driver is working')
-    # except:
-        # print('Need to install chrome driver is working')
-    # service = Service(ChromeDriverManager().install())
-    # driver = webdriver.Chrome(service=service, options=options)
-    # print('driver is working')
-    # driver = webdriver.Chrome(options=options)
-    # url = 'https://www.stubhub.ie/euro-2024-tickets/grouping/1507012/?wcpb=4'
-    # driver.get(url)
-    # print("Browser is successfully opened")
     driver.maximize_window()
-    
     return driver
 
 def event_urls():
@@ -75,16 +68,11 @@ def event_urls():
     for row in rows:
         url = row[1]  
         event_links.append(url)
-    
-    # for url in event_urls:
-    #     print(url)
     print(f"Total event URLs fetched: {len(event_links)}")
     cursor.close()
     conn.close()
-    
     return event_links
     
-
 def scrolling_page(browser):
     max_retries = 3
     while True:
@@ -111,48 +99,6 @@ def scrolling_page(browser):
             pass
         except NoSuchElementException:
             break
-
-# def clean_text(text):
-#     return text.replace('\\u20ac', '').replace('\\u00a', ' ').replace('\\', '').replace('\xa0','')
-
-# def ticket_info(browser):
-
-#     soup = BeautifulSoup(browser.page_source, 'html.parser')
-#     card_elements = soup.select('ul.RoyalTicketList__container > li')
-#     category = []
-#     ticket_prices = []
-#     sets_information = []
-#     tickets_number = []
-#     for card_element in card_elements:
-#         element = html.fromstring(str(card_element))
-
-#         cat = card_element.select_one('div.SectionRowSeat__sectionTitle.RoyalTicketListPanel__SectionName')
-#         category_text = clean_text(cat.text.strip()) if cat else 'N/A'
-#         category.append(category_text)
-
-#         sets_info = card_element.select('span.SectionRowSeat__row')
-#         if sets_info:
-#             cleaned_sets_info = ' '.join([clean_text(set_no.text.replace('0','').strip()) for set_no in sets_info])
-#             sets_information.append(cleaned_sets_info)
-#         else:
-#             sets_information.append('N/A')
-
-#         price = card_element.select_one('div.PriceDisplay__price')
-#         price_text = clean_text(price.text.strip()) if price else 'N/A'
-#         ticket_prices.append(price_text)
-
-#         tickets = element.xpath('//div[@class="RoyalTicketListPanel__SecondaryInfo"]/text()[normalize-space()]')
-#         if tickets:
-#             cleaned_tickets = ' '.join([clean_text(ticket.strip()) if isinstance(ticket, str) else clean_text(ticket.strip()) for ticket in tickets])
-#             tickets_number.append(cleaned_tickets)
-#         else:
-#             tickets_number.append('N/A')
-
-#     return category, ticket_prices, sets_information, tickets_number
-
-# def json_data(url, category, ticket_prices, sets_information, tickets_number):
-#     print(f"Total Numbers of category", len(category), {url})
-#     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
 
 def clean_text(text):
     return re.sub(r'\s+', ' ', text).strip()
@@ -214,7 +160,6 @@ def json_data(url,event_name,scrape_time, category, ticket_prices, sets_informat
     final_json_data = json.dumps(combined_data)
     
     final_json_data_cleaned = final_json_data.replace('\n', '')
-    # print(final_json_data_cleaned)
 
     save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
     
@@ -231,18 +176,9 @@ def process_url(index, url):
     browser = get_browser()
     try:
         browser.get(url)
-        # print(f"Successfully opened URL: {url}")
-        
         scrolling_page(browser)
-        # print("Finished scrolling the page")
         event_name,scrape_time, category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
-        # category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
-        # print("Extracted ticket information")
-        
-        # json_data(url, category, ticket_prices, sets_information, tickets_number)
         json_data(url,event_name,scrape_time, category, ticket_prices, sets_information, tickets_number)
-        # print("Processed ticket information into JSON")
-        
     except Exception as e:
         print(f"Error processing URL {url}: {e}")
     finally:
