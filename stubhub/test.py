@@ -22,7 +22,7 @@ import re
 import time
 import json
 import os
-
+import requests
 
 def get_browser():
     chromedriver_path = ChromeDriverManager().install()
