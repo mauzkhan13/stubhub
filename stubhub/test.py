@@ -108,12 +108,12 @@ def clean_text(text):
 def ticket_info(driver):
 
     category,ticket_prices,sets_information,tickets_number,event_name,scrape_time = [],[],[],[],[],[]
-    event_time,event_date, venue, city, city_shortcode = [], [], [], [], []
-
-    event_time.append(driver.find_element(By.XPATH, '//div[@class="event-info"]/time').text)
-
+    event_date,event_time, venue, city, city_shortcode = [], [], [], [], []
+    
     event_date.append(driver.find_element(By.XPATH, '//div[@class="event-info"]/span').text)
-
+    
+    event_time.append(driver.find_element(By.XPATH, '//div[@class="event-info"]/time').text)
+    
     texts = driver.find_element(By.XPATH, '//div[@class="event-info"]/span[2]').text
     if texts:
         text_split = texts.split(',')
@@ -173,12 +173,12 @@ def ticket_info(driver):
         else:
             tickets_number.append('N/A')
 
-    return event_name,event_time,event_date, venue, city, city_shortcode,scrape_time, category, ticket_prices, sets_information, tickets_number
+    return event_name,event_date,event_time, venue, city, city_shortcode,scrape_time, category, ticket_prices, sets_information, tickets_number
 
 
-def json_data(url,event_name,event_time,event_date, venue, city, city_shortcode,scrape_time, category, ticket_prices, sets_information, tickets_number):
+def json_data(url,event_name,event_date,event_time, venue, city, city_shortcode,scrape_time, category, ticket_prices, sets_information, tickets_number):
     print(f"Total Numbers of category", len(category), {url})
-    event_df = pd.DataFrame(zip(event_name,event_time,event_date, venue, city, city_shortcode,scrape_time), columns=['Event Name', 'Event Date','Event Time','Venue','City','City Short Code','Scraped Time'])
+    event_df = pd.DataFrame(zip(event_name,event_date, event_time,venue, city, city_shortcode,scrape_time), columns=['Event Name', 'Event Date','Event Time','Venue','City','City Short Code','Scraped Time'])
     event_data = json.loads(event_df.to_json(orient='records'))
 
     df = pd.DataFrame(zip(category, ticket_prices, sets_information, tickets_number), columns=['Category', 'Ticket Prices', 'Set information', 'Ticket Number'])
@@ -193,7 +193,7 @@ def json_data(url,event_name,event_time,event_date, venue, city, city_shortcode,
     final_json_data = json.dumps(combined_data)
 
     final_json_data_cleaned = final_json_data.replace('\n', '')
-    # print(final_json_data_cleaned)
+    print(final_json_data_cleaned)
     save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
     
     headers = {'Content-Type': 'application/json'}
@@ -210,8 +210,8 @@ def process_url(index, url):
     try:
         browser.get(url)
         scrolling_page(browser)
-        event_name,event_time,event_date, venue, city, city_shortcode,scrape_time, category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
-        json_data(url,event_name,event_time,event_date, venue, city, city_shortcode,scrape_time, category, ticket_prices, sets_information, tickets_number)
+        event_name,event_date,event_time, venue, city, city_shortcode,scrape_time, category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
+        json_data(url,event_name,event_date,event_time, venue, city, city_shortcode,scrape_time, category, ticket_prices, sets_information, tickets_number)
     except Exception as e:
         print(f"Error processing URL {url}: {e}")
     finally:
