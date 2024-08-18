@@ -115,7 +115,7 @@ def ticket_info(driver):
     scrape_times = datetime.now().strftime('%H:%M:%S, %d-%m-%Y')
     scrape_time.append(scrape_times)
 
-    event_name.append(driver.find_element(By.XPATH, '//h1').text.strip())
+    
 
     for card_element in card_elements:
         element = html.fromstring(str(card_element))
@@ -145,7 +145,7 @@ def ticket_info(driver):
         event_date.append(driver.find_element(By.XPATH, '//div[@class="event-info"]/span').text)
     
         event_time.append(driver.find_element(By.XPATH, '//div[@class="event-info"]/time').text)
-        
+        event_name.append(driver.find_element(By.XPATH, '//h1').text.strip())
         texts = driver.find_element(By.XPATH, '//div[@class="event-info"]/span[2]').text
         if texts:
             text_split = texts.split(',')
@@ -171,7 +171,7 @@ def ticket_info(driver):
             venue.append('N/A')
             city.append('N/A')
             city_shortcode.append('N/A')
-
+        
 
     return event_name,event_date,event_time, venue, city, city_shortcode,scrape_time, category, ticket_prices, sets_information, tickets_number
 
