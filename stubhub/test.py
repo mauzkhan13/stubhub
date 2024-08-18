@@ -1,11 +1,7 @@
 import threading
 import concurrent.futures
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException, ElementClickInterceptedException
-import gspread
-from google.oauth2.service_account import Credentials
 import pandas as pd
 from bs4 import BeautifulSoup
 from lxml import html
@@ -23,6 +19,7 @@ import time
 import json
 import os
 import requests
+from seleniumwire import webdriver
 
 def get_browser():
     chromedriver_path = ChromeDriverManager().install()
@@ -45,9 +42,9 @@ def get_browser():
         }
     }
     try:
-        driver = webdriver.Chrome(options=options)
+        driver = webdriver.Chrome(options=options,seleniumwire_options=proxy_options)
     except:
-        driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options)
+        driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options,seleniumwire_options=proxy_options)
         print(f"ChromeDriver installed at: {chromedriver_path}")
     driver.maximize_window()
     return driver
