@@ -108,36 +108,7 @@ def ticket_info(driver):
     category,ticket_prices,sets_information,tickets_number,event_name,scrape_time = [],[],[],[],[],[]
     event_date,event_time, venue, city, city_shortcode = [], [], [], [], []
     
-    event_date.append(driver.find_element(By.XPATH, '//div[@class="event-info"]/span').text)
-    
-    event_time.append(driver.find_element(By.XPATH, '//div[@class="event-info"]/time').text)
-    
-    texts = driver.find_element(By.XPATH, '//div[@class="event-info"]/span[2]').text
-    if texts:
-        text_split = texts.split(',')
-        
-        if len(text_split) > 0:
-            text1 = text_split[0]
-            venue.append(text1.replace('at', '').strip())
-        else:
-            venue.append('N/A')
-        
-        if len(text_split) > 1:
-            text2 = text_split[1]
-            city.append(text2.strip())
-        else:
-            city.append('N/A')
-        
-        if len(text_split) > 2:
-            text3 = text_split[2]
-            city_shortcode.append(text3.strip())
-        else:
-            city_shortcode.append('N/A')
-    else:
-        venue.append('N/A')
-        city.append('N/A')
-        city_shortcode.append('N/A')
-
+    sleep(3)
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     card_elements = soup.select('ul.RoyalTicketList__container > li')
 
@@ -170,6 +141,37 @@ def ticket_info(driver):
             tickets_number.append(cleaned_tickets)
         else:
             tickets_number.append('N/A')
+
+        event_date.append(driver.find_element(By.XPATH, '//div[@class="event-info"]/span').text)
+    
+        event_time.append(driver.find_element(By.XPATH, '//div[@class="event-info"]/time').text)
+        
+        texts = driver.find_element(By.XPATH, '//div[@class="event-info"]/span[2]').text
+        if texts:
+            text_split = texts.split(',')
+            
+            if len(text_split) > 0:
+                text1 = text_split[0]
+                venue.append(text1.replace('at', '').strip())
+            else:
+                venue.append('N/A')
+            
+            if len(text_split) > 1:
+                text2 = text_split[1]
+                city.append(text2.strip())
+            else:
+                city.append('N/A')
+            
+            if len(text_split) > 2:
+                text3 = text_split[2]
+                city_shortcode.append(text3.strip())
+            else:
+                city_shortcode.append('N/A')
+        else:
+            venue.append('N/A')
+            city.append('N/A')
+            city_shortcode.append('N/A')
+
 
     return event_name,event_date,event_time, venue, city, city_shortcode,scrape_time, category, ticket_prices, sets_information, tickets_number
 
