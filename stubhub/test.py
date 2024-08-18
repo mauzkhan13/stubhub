@@ -191,14 +191,14 @@ def json_data(url,event_name,event_date,event_time, venue, city, city_shortcode,
 
     final_json_data_cleaned = final_json_data.replace('\n', '')
     # print(final_json_data_cleaned)
-    # save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
+    save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
     
-    # headers = {'Content-Type': 'application/json'}
-    # response = requests.post(save_data_url, data=final_json_data_cleaned, headers=headers)
-    # if response.status_code == 200:
-    #     print(f'Data successfully sent to the server.{response.status_code}')
-    # else:
-    #     print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(save_data_url, data=final_json_data_cleaned, headers=headers)
+    if response.status_code == 200:
+        print(f'Data successfully sent to the server.{response.status_code}')
+    else:
+        print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
     return True
 
 def process_url(index, url):
