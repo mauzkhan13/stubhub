@@ -64,7 +64,7 @@ def event_urls():
     cursor.execute(query)
     rows = cursor.fetchall()
     
-    for row in rows[:20]:
+    for row in rows[10:20]:
         url = row[1]  
         event_links.append(url)
     print(f"Total event URLs fetched: {len(event_links)}")
@@ -218,7 +218,7 @@ def process_url(index, url):
 def main():
     urls = event_urls()
     
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         futures = [executor.submit(process_url, index, url) for index, url in enumerate(urls)]
         concurrent.futures.wait(futures)
 
