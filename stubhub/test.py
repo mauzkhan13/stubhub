@@ -52,7 +52,7 @@ def get_browser():
         'profile.managed_default_content_settings.webxr': 2,
     
     })
-    options.page_load_strategy = 'eager'
+    # options.page_load_strategy = 'eager'
     try:
         driver = uc.Chrome(options=options)
     except:
