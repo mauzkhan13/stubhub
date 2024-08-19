@@ -40,7 +40,7 @@ def get_browser():
     options.add_argument('--v=99') 
     options.add_argument('--headless')
     options.binary_location = '/usr/bin/chromedriver' 
-     driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(options=options)
     # options.add_experimental_option('prefs', {
     #     'profile.managed_default_content_settings.images': 1,
     #     'profile.managed_default_content_settings.stylesheets': 2,
