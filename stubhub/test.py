@@ -72,7 +72,7 @@ def event_urls():
     cursor.execute(query)
     rows = cursor.fetchall()
     
-    for row in rows[10:21]:
+    for row in rows:
         url = row[1]  
         event_links.append(url)
     print(f"Total event URLs fetched: {len(event_links)}")
@@ -116,7 +116,7 @@ def ticket_info(driver):
     category,ticket_prices,sets_information,tickets_number,event_name,scrape_time = [],[],[],[],[],[]
     event_date,event_time, venue, city, city_shortcode = [], [], [], [], []
     
-    sleep(3)
+    # sleep(3)
     
     wait = WebDriverWait(driver, 10)
     try:
@@ -194,7 +194,7 @@ def ticket_info(driver):
 
 
 def json_data(url,event_name,event_date,event_time, venue, city, city_shortcode,scrape_time, category, ticket_prices, sets_information, tickets_number):
-    print(f"Total Numbers of category", len(category), {url})
+    print(Fore.BLUE + f"Total Numbers of category", len(category), {url})
     event_df = pd.DataFrame(zip(event_name,event_date, event_time,venue, city, city_shortcode,scrape_time), columns=['Event Name', 'Event Date','Event Time','Venue','City','City Short Code','Scraped Time'])
     event_data = json.loads(event_df.to_json(orient='records'))
 
@@ -222,7 +222,7 @@ def json_data(url,event_name,event_date,event_time, venue, city, city_shortcode,
     return True
 
 def process_url(index, url):
-    print(f"Processing URL No {index}: {url}")
+    print(Fore.YELLOW +f"Processing URL No {index}: {url}")
     browser = get_browser()
     try:
         browser.get(url)
@@ -230,14 +230,13 @@ def process_url(index, url):
         event_name,event_date,event_time, venue, city, city_shortcode,scrape_time, category, ticket_prices, sets_information, tickets_number = ticket_info(browser)
         json_data(url,event_name,event_date,event_time, venue, city, city_shortcode,scrape_time, category, ticket_prices, sets_information, tickets_number)
     except Exception as e:
-        print(f"Error processing URL {url}: {e}")
+        print(Fore.RED +f"Error processing URL {url}: {e}")
     finally:
         browser.quit()
 
 def main():
     urls = event_urls()
-    
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
         futures = [executor.submit(process_url, index, url) for index, url in enumerate(urls)]
         concurrent.futures.wait(futures)
 
