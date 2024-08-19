@@ -71,7 +71,7 @@ def event_urls():
     cursor.execute(query)
     rows = cursor.fetchall()
     
-    for row in rows[10:20]:
+    for row in rows[10:21]:
         url = row[1]  
         event_links.append(url)
     print(f"Total event URLs fetched: {len(event_links)}")
@@ -116,6 +116,15 @@ def ticket_info(driver):
     event_date,event_time, venue, city, city_shortcode = [], [], [], [], []
     
     sleep(3)
+    
+    wait = WebDriverWait(driver, 10)
+    try:
+        accept_cookies = wait.until( EC.visibility_of_element_located((By.XPATH, '//span[contains(text(),"Accept All")]')))
+        accept_cookies.click()
+        print('Cookies are accepted...')
+    except Exception:
+        pass
+        
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     card_elements = soup.select('ul.RoyalTicketList__container > li')
 
@@ -227,7 +236,7 @@ def process_url(index, url):
 def main():
     urls = event_urls()
     
-    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         futures = [executor.submit(process_url, index, url) for index, url in enumerate(urls)]
         concurrent.futures.wait(futures)
 
