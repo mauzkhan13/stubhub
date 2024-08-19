@@ -31,7 +31,6 @@ def get_browser():
     options.add_argument('--disable-blink-features=AutomationControlled')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-gpu')
-    options.add_argument('--start-maximized')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-logging')
     options.add_argument('--enable-automation')
@@ -39,19 +38,19 @@ def get_browser():
     options.add_argument('--v=99') 
     options.add_argument('--headless')
     options.binary_location = '/usr/bin/chromedriver' 
-    options.add_experimental_option('prefs', {
-        'profile.managed_default_content_settings.images': 1,
-        'profile.managed_default_content_settings.stylesheets': 2,
-        'profile.managed_default_content_settings.plugins': 2,
-        'profile.managed_default_content_settings.popups': 2,
-        'profile.managed_default_content_settings.geolocation': 2,
-        'profile.managed_default_content_settings.notifications': 2,
-        'profile.managed_default_content_settings.mouselock': 2,
-        'profile.managed_default_content_settings.pointerLock': 2,
-        'profile.managed_default_content_settings.webusb': 2,
-        'profile.managed_default_content_settings.webxr': 2,
+    # options.add_experimental_option('prefs', {
+    #     'profile.managed_default_content_settings.images': 1,
+    #     'profile.managed_default_content_settings.stylesheets': 2,
+    #     'profile.managed_default_content_settings.plugins': 2,
+    #     'profile.managed_default_content_settings.popups': 2,
+    #     'profile.managed_default_content_settings.geolocation': 2,
+    #     'profile.managed_default_content_settings.notifications': 2,
+    #     'profile.managed_default_content_settings.mouselock': 2,
+    #     'profile.managed_default_content_settings.pointerLock': 2,
+    #     'profile.managed_default_content_settings.webusb': 2,
+    #     'profile.managed_default_content_settings.webxr': 2,
     
-    })
+    # })
     # options.page_load_strategy = 'eager'
     driver = uc.Chrome(options=options)
     # try:
@@ -60,18 +59,18 @@ def get_browser():
     #     driver = uc.Chrome(service=ChromeService(chromedriver_path))
     #     print(f"ChromeDriver installed at: {chromedriver_path}")
     
-    driver.execute_script("window.stop();")
-    driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
-    stealth(driver,
-            languages=["en-US", "en"],
-            vendor="Google Inc.",
-            platform="Win32",
-            webgl_vendor="Intel Inc.",
-            renderer="Intel Iris OpenGL Engine",
-            fix_hairline=True,
-            )
-    while driver.execute_script("return document.readyState") != "complete":
-        pass
+    # driver.execute_script("window.stop();")
+    # driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+    # stealth(driver,
+    #         languages=["en-US", "en"],
+    #         vendor="Google Inc.",
+    #         platform="Win32",
+    #         webgl_vendor="Intel Inc.",
+    #         renderer="Intel Iris OpenGL Engine",
+    #         fix_hairline=True,
+    #         )
+    # while driver.execute_script("return document.readyState") != "complete":
+    #     pass
     # driver.maximize_window()
     return driver
 
