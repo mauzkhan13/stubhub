@@ -132,7 +132,7 @@ def ticket_info(driver):
     
     # sleep(3)
     
-    wait = WebDriverWait(driver, 10)
+    wait = WebDriverWait(driver, 5)
     try:
         accept_cookies = wait.until( EC.visibility_of_element_located((By.XPATH, '//span[contains(text(),"Accept All")]')))
         accept_cookies.click()
