@@ -198,7 +198,7 @@ def ticket_info(driver):
 
 
 def json_data(url,event_name,event_date,event_time, venue, city, city_shortcode,scrape_time, category, ticket_prices, sets_information, tickets_number):
-    print(Fore.BLUE + f"Total Numbers of category", len(category), {url})
+    print(Fore.WHITE + f"Total Numbers of category", len(category), {url})
     event_df = pd.DataFrame(zip(event_name,event_date, event_time,venue, city, city_shortcode,scrape_time), columns=['Event Name', 'Event Date','Event Time','Venue','City','City Short Code','Scraped Time'])
     event_data = json.loads(event_df.to_json(orient='records'))
 
