@@ -23,7 +23,7 @@ import time
 from colorama import Fore
 import undetected_chromedriver as uc
 from selenium_stealth import stealth
-from datetime import time
+from datetime import datetime
 
 def get_browser():
     chromedriver_path = ChromeDriverManager().install()
