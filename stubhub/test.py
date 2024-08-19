@@ -33,14 +33,21 @@ def get_browser():
     options.add_argument('--headless')
     
     options.binary_location = '/usr/bin/chromedriver' 
-    SCRAPEOPS_API_KEY = '9b366c44-ef9f-4537-b376-90614f2a65de'
+    
     proxy_options = {
         'proxy': {
-            'http': f'http://scrapeops.headless_browser_mode=true:{SCRAPEOPS_API_KEY}@proxy.scrapeops.io:5353',
-            'https': f'http://scrapeops.headless_browser_mode=true:{SCRAPEOPS_API_KEY}@proxy.scrapeops.io:5353',
-            'no_proxy': 'localhost:127.0.0.1'
+            'http': 'http://housep:masters_region-europe_streaming-1@geo.iproyal.com:12321',
+            'https': 'http://housep:masters_region-europe_streaming-1@geo.iproyal.com:12321',
         }
     }
+    # SCRAPEOPS_API_KEY = '9b366c44-ef9f-4537-b376-90614f2a65de'
+    # proxy_options = {
+    #     'proxy': {
+    #         'http': f'http://scrapeops.headless_browser_mode=true:{SCRAPEOPS_API_KEY}@proxy.scrapeops.io:5353',
+    #         'https': f'http://scrapeops.headless_browser_mode=true:{SCRAPEOPS_API_KEY}@proxy.scrapeops.io:5353',
+    #         'no_proxy': 'localhost:127.0.0.1'
+    #     }
+    # }
     try:
         driver = webdriver.Chrome(options=options,seleniumwire_options=proxy_options)
         # driver = webdriver.Chrome(options=options)
