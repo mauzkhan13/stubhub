@@ -53,11 +53,12 @@ def get_browser():
     
     })
     # options.page_load_strategy = 'eager'
-    try:
-        driver = uc.Chrome(options=options)
-    except:
-        driver = uc.Chrome(service=ChromeService(chromedriver_path))
-        print(f"ChromeDriver installed at: {chromedriver_path}")
+    driver = uc.Chrome(options=options)
+    # try:
+    #     driver = uc.Chrome(options=options)
+    # except:
+    #     driver = uc.Chrome(service=ChromeService(chromedriver_path))
+    #     print(f"ChromeDriver installed at: {chromedriver_path}")
     
     driver.execute_script("window.stop();")
     driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
@@ -71,7 +72,7 @@ def get_browser():
             )
     while driver.execute_script("return document.readyState") != "complete":
         pass
-    driver.maximize_window()
+    # driver.maximize_window()
     return driver
 
 def event_urls():
