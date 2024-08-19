@@ -239,7 +239,7 @@ def json_data(url,event_name,event_date,event_time, venue, city, city_shortcode,
     if response.status_code == 200:
         print(f'Data successfully sent to the server.{response.status_code}')
     else:
-        print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
+        print(f'Failed to send data. Status code: {response.status_code}')
     return True
 
 def process_url(index, url):
