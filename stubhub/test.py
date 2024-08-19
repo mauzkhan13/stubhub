@@ -24,20 +24,23 @@ import time
 from colorama import Fore
 import undetected_chromedriver as uc
 from selenium_stealth import stealth
+
 def get_browser():
     chromedriver_path = ChromeDriverManager().install()
-    
-    options = uc.ChromeOptions()
-    options.add_argument('--disable-blink-features=AutomationControlled')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-gpu')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--disable-logging')
-    options.add_argument('--enable-automation')
-    options.add_argument('--log-level=3')
-    options.add_argument('--v=99') 
+    options = Options()
     options.add_argument('--headless')
-    options.binary_location = '/usr/bin/chromedriver' 
+    driver = webdriver.Chrome(options=options)
+    # options = uc.ChromeOptions()
+    # options.add_argument('--disable-blink-features=AutomationControlled')
+    # options.add_argument('--no-sandbox')
+    # options.add_argument('--disable-gpu')
+    # options.add_argument('--disable-dev-shm-usage')
+    # options.add_argument('--disable-logging')
+    # options.add_argument('--enable-automation')
+    # options.add_argument('--log-level=3')
+    # options.add_argument('--v=99') 
+    # options.add_argument('--headless')
+    # options.binary_location = '/usr/bin/chromedriver' 
     # options.add_experimental_option('prefs', {
     #     'profile.managed_default_content_settings.images': 1,
     #     'profile.managed_default_content_settings.stylesheets': 2,
@@ -52,7 +55,7 @@ def get_browser():
     
     # })
     # options.page_load_strategy = 'eager'
-    driver = uc.Chrome(options=options)
+    # driver = uc.Chrome(options=options)
     # try:
     #     driver = uc.Chrome(options=options)
     # except:
