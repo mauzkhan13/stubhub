@@ -24,41 +24,51 @@ import time
 from colorama import Fore
 def get_browser():
     chromedriver_path = ChromeDriverManager().install()
-   
-    options = Options()
+    
+    options = uc.ChromeOptions()
+    options.add_argument('--disable-blink-features=AutomationControlled')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-gpu')
+    options.add_argument('--start-maximized')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-logging')
+    options.add_argument('--enable-automation')
     options.add_argument('--log-level=3')
+    options.add_argument('--v=99') 
     options.add_argument('--headless')
-    
     options.binary_location = '/usr/bin/chromedriver' 
-
-    # proxy_options = {
-    #         'proxy': {
-    #             'http': 'http://housep:masters_region-europe_streaming-1@geo.iproyal.com:12321',
-    #             'https': 'http://housep:masters_region-europe_streaming-1@geo.iproyal.com:12321',
-    #         }
-    #     }
-    # try:
-    #     driver = webdriver.Chrome(options=options,seleniumwire_options=proxy_options)
-    # except:
-    #     driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options,seleniumwire_options=proxy_options)
-    #     print(f"ChromeDriver installed at: {chromedriver_path}")
-    # SCRAPEOPS_API_KEY = '9b366c44-ef9f-4537-b376-90614f2a65de'
-    # proxy_options = {
-    #     'proxy': {
-    #         'http': f'http://scrapeops.headless_browser_mode=true:{SCRAPEOPS_API_KEY}@proxy.scrapeops.io:5353',
-    #         'https': f'http://scrapeops.headless_browser_mode=true:{SCRAPEOPS_API_KEY}@proxy.scrapeops.io:5353',
-    #         'no_proxy': 'localhost:127.0.0.1'
-    #     }
-    # }
+    options.add_experimental_option('prefs', {
+        'profile.managed_default_content_settings.images': 2,
+        'profile.managed_default_content_settings.stylesheets': 2,
+        'profile.managed_default_content_settings.plugins': 2,
+        'profile.managed_default_content_settings.popups': 2,
+        'profile.managed_default_content_settings.geolocation': 2,
+        'profile.managed_default_content_settings.notifications': 2,
+        'profile.managed_default_content_settings.mouselock': 2,
+        'profile.managed_default_content_settings.pointerLock': 2,
+        'profile.managed_default_content_settings.webusb': 2,
+        'profile.managed_default_content_settings.webxr': 2,
+    
+    })
+    options.page_load_strategy = 'eager'
     try:
-        driver = webdriver.Chrome(options=options)
+        driver = uc.Chrome(options=options)
     except:
-        driver = webdriver.Chrome(service=ChromeService(chromedriver_path))
+        driver = uc.Chrome(service=ChromeService(chromedriver_path))
         print(f"ChromeDriver installed at: {chromedriver_path}")
+    
+    driver.execute_script("window.stop();")
+    driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+    stealth(driver,
+            languages=["en-US", "en"],
+            vendor="Google Inc.",
+            platform="Win32",
+            webgl_vendor="Intel Inc.",
+            renderer="Intel Iris OpenGL Engine",
+            fix_hairline=True,
+            )
+    while driver.execute_script("return document.readyState") != "complete":
+        pass
     driver.maximize_window()
     return driver
 
@@ -218,6 +228,7 @@ def json_data(url,event_name,event_date,event_time, venue, city, city_shortcode,
     save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
     
     headers = {'Content-Type': 'application/json'}
+    sleep(1)
     response = requests.post(save_data_url, data=final_json_data_cleaned, headers=headers)
     if response.status_code == 200:
         print(f'Data successfully sent to the server.{response.status_code}')
