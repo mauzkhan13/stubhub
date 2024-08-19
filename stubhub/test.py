@@ -35,17 +35,17 @@ def get_browser():
     
     options.binary_location = '/usr/bin/chromedriver' 
 
-    proxy_options = {
-            'proxy': {
-                'http': 'http://housep:masters_region-europe_streaming-1@geo.iproyal.com:12321',
-                'https': 'http://housep:masters_region-europe_streaming-1@geo.iproyal.com:12321',
-            }
-        }
-    try:
-        driver = webdriver.Chrome(options=options,seleniumwire_options=proxy_options)
-    except:
-        driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options,seleniumwire_options=proxy_options)
-        print(f"ChromeDriver installed at: {chromedriver_path}")
+    # proxy_options = {
+    #         'proxy': {
+    #             'http': 'http://housep:masters_region-europe_streaming-1@geo.iproyal.com:12321',
+    #             'https': 'http://housep:masters_region-europe_streaming-1@geo.iproyal.com:12321',
+    #         }
+    #     }
+    # try:
+    #     driver = webdriver.Chrome(options=options,seleniumwire_options=proxy_options)
+    # except:
+    #     driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options,seleniumwire_options=proxy_options)
+    #     print(f"ChromeDriver installed at: {chromedriver_path}")
     # SCRAPEOPS_API_KEY = '9b366c44-ef9f-4537-b376-90614f2a65de'
     # proxy_options = {
     #     'proxy': {
@@ -54,12 +54,11 @@ def get_browser():
     #         'no_proxy': 'localhost:127.0.0.1'
     #     }
     # }
-    # try:
-    #     # driver = webdriver.Chrome(options=options,seleniumwire_options=proxy_options)
-    #     driver = webdriver.Chrome(options=options)
-    # except:
-    #     driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options,seleniumwire_options=proxy_options)
-    #     print(f"ChromeDriver installed at: {chromedriver_path}")
+    try:
+        driver = webdriver.Chrome(options=options)
+    except:
+        driver = webdriver.Chrome(service=ChromeService(chromedriver_path))
+        print(f"ChromeDriver installed at: {chromedriver_path}")
     driver.maximize_window()
     return driver
 
@@ -100,7 +99,7 @@ def scrolling_page(browser):
                     try:
                         back_to_tickets = browser.find_element(By.XPATH, '//div[contains(text(),"Back to tickets")]')
                         back_to_tickets.click()
-                        print("Clicked on Back to Tickets")
+                        # print("Clicked on Back to Tickets")
                     except (NoSuchElementException, StaleElementReferenceException):
                         pass
                     retries += 1
@@ -216,14 +215,14 @@ def json_data(url,event_name,event_date,event_time, venue, city, city_shortcode,
 
     final_json_data_cleaned = final_json_data.replace('\n', '')
     # print(final_json_data_cleaned)
-    # save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
+    save_data_url = 'https://pinhouse.seatpin.com/api/bot-webhook'
     
-    # headers = {'Content-Type': 'application/json'}
-    # response = requests.post(save_data_url, data=final_json_data_cleaned, headers=headers)
-    # if response.status_code == 200:
-    #     print(f'Data successfully sent to the server.{response.status_code}')
-    # else:
-    #     print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
+    headers = {'Content-Type': 'application/json'}
+    response = requests.post(save_data_url, data=final_json_data_cleaned, headers=headers)
+    if response.status_code == 200:
+        print(f'Data successfully sent to the server.{response.status_code}')
+    else:
+        print(f'Failed to send data. Status code: {response.status_code}, Response: {response.text}')
     return True
 
 def process_url(index, url):
