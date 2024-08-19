@@ -34,13 +34,18 @@ def get_browser():
     options.add_argument('--headless')
     
     options.binary_location = '/usr/bin/chromedriver' 
-    
+
     proxy_options = {
-        'proxy': {
-            'http': 'http://housep:masters_region-europe_streaming-1@geo.iproyal.com:12321',
-            'https': 'http://housep:masters_region-europe_streaming-1@geo.iproyal.com:12321',
+            'proxy': {
+                'http': 'http://housep:masters_region-europe_streaming-1@geo.iproyal.com:12321',
+                'https': 'http://housep:masters_region-europe_streaming-1@geo.iproyal.com:12321',
+            }
         }
-    }
+    try:
+        driver = webdriver.Chrome(options=options,seleniumwire_options=proxy_options)
+    except:
+        driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options,seleniumwire_options=proxy_options)
+        print(f"ChromeDriver installed at: {chromedriver_path}")
     # SCRAPEOPS_API_KEY = '9b366c44-ef9f-4537-b376-90614f2a65de'
     # proxy_options = {
     #     'proxy': {
@@ -49,12 +54,12 @@ def get_browser():
     #         'no_proxy': 'localhost:127.0.0.1'
     #     }
     # }
-    try:
-        # driver = webdriver.Chrome(options=options,seleniumwire_options=proxy_options)
-        driver = webdriver.Chrome(options=options)
-    except:
-        driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options,seleniumwire_options=proxy_options)
-        print(f"ChromeDriver installed at: {chromedriver_path}")
+    # try:
+    #     # driver = webdriver.Chrome(options=options,seleniumwire_options=proxy_options)
+    #     driver = webdriver.Chrome(options=options)
+    # except:
+    #     driver = webdriver.Chrome(service=ChromeService(chromedriver_path), options=options,seleniumwire_options=proxy_options)
+    #     print(f"ChromeDriver installed at: {chromedriver_path}")
     driver.maximize_window()
     return driver
 
