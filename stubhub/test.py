@@ -22,6 +22,8 @@ import requests
 from seleniumwire import webdriver
 import time
 from colorama import Fore
+import undetected_chromedriver as uc
+from selenium_stealth import stealth
 def get_browser():
     chromedriver_path = ChromeDriverManager().install()
     
