@@ -20,7 +20,8 @@ import json
 import os
 import requests
 from seleniumwire import webdriver
-
+import time
+from colorama import Fore
 def get_browser():
     chromedriver_path = ChromeDriverManager().install()
    
@@ -121,7 +122,7 @@ def ticket_info(driver):
     try:
         accept_cookies = wait.until( EC.visibility_of_element_located((By.XPATH, '//span[contains(text(),"Accept All")]')))
         accept_cookies.click()
-        print('Cookies are accepted...')
+        # print('Cookies are accepted...')
     except Exception:
         pass
         
@@ -241,7 +242,13 @@ def main():
         concurrent.futures.wait(futures)
 
 if __name__ == "__main__":
+    start_time = time.time()
     main()
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    hours, remainder = divmod(elapsed_time, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    print(Fore.GREEN + f"Total time to complete: {int(hours)}:{int(minutes)}:{seconds:.2f}")
 
 
 
