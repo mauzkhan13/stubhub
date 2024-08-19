@@ -28,9 +28,8 @@ from datetime import datetime
 def get_browser():
     chromedriver_path = ChromeDriverManager().install()
     options = Options()
-    # options.add_argument('--headless')
-   
     # options = uc.ChromeOptions()
+    
     options.add_argument('--disable-blink-features=AutomationControlled')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-gpu')
@@ -41,20 +40,22 @@ def get_browser():
     options.add_argument('--v=99') 
     options.add_argument('--headless')
     options.binary_location = '/usr/bin/chromedriver' 
-    driver = webdriver.Chrome(options=options)
-    # options.add_experimental_option('prefs', {
-    #     'profile.managed_default_content_settings.images': 1,
-    #     'profile.managed_default_content_settings.stylesheets': 2,
-    #     'profile.managed_default_content_settings.plugins': 2,
-    #     'profile.managed_default_content_settings.popups': 2,
-    #     'profile.managed_default_content_settings.geolocation': 2,
-    #     'profile.managed_default_content_settings.notifications': 2,
-    #     'profile.managed_default_content_settings.mouselock': 2,
-    #     'profile.managed_default_content_settings.pointerLock': 2,
-    #     'profile.managed_default_content_settings.webusb': 2,
-    #     'profile.managed_default_content_settings.webxr': 2,
     
-    # })
+    options.add_experimental_option('prefs', {
+        'profile.managed_default_content_settings.images': 2,
+        'profile.managed_default_content_settings.stylesheets': 2,
+        'profile.managed_default_content_settings.plugins': 2,
+        'profile.managed_default_content_settings.popups': 2,
+        'profile.managed_default_content_settings.geolocation': 2,
+        'profile.managed_default_content_settings.notifications': 2,
+        'profile.managed_default_content_settings.mouselock': 2,
+        'profile.managed_default_content_settings.pointerLock': 2,
+        'profile.managed_default_content_settings.webusb': 2,
+        'profile.managed_default_content_settings.webxr': 2,
+    
+    })
+
+    driver = webdriver.Chrome(options=options)
     # options.page_load_strategy = 'eager'
     # driver = uc.Chrome(options=options)
     # try:
@@ -138,13 +139,13 @@ def ticket_info(driver):
     
     sleep(3)
     
-    # wait = WebDriverWait(driver, 5)
-    # try:
-    #     accept_cookies = wait.until( EC.visibility_of_element_located((By.XPATH, '//span[contains(text(),"Accept All")]')))
-    #     accept_cookies.click()
-    #     # print('Cookies are accepted...')
-    # except Exception:
-    #     pass
+    wait = WebDriverWait(driver, 7)
+    try:
+        accept_cookies = wait.until( EC.visibility_of_element_located((By.XPATH, '//span[contains(text(),"Accept All")]')))
+        accept_cookies.click()
+        # print('Cookies are accepted...')
+    except Exception:
+        pass
         
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     card_elements = soup.select('ul.RoyalTicketList__container > li')
@@ -258,7 +259,7 @@ def process_url(index, url):
 
 def main():
     urls = event_urls()
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
         futures = [executor.submit(process_url, index, url) for index, url in enumerate(urls)]
         concurrent.futures.wait(futures)
 
