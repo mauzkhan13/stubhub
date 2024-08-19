@@ -40,7 +40,7 @@ def get_browser():
     options.add_argument('--headless')
     options.binary_location = '/usr/bin/chromedriver' 
     options.add_experimental_option('prefs', {
-        'profile.managed_default_content_settings.images': 2,
+        'profile.managed_default_content_settings.images': 1,
         'profile.managed_default_content_settings.stylesheets': 2,
         'profile.managed_default_content_settings.plugins': 2,
         'profile.managed_default_content_settings.popups': 2,
