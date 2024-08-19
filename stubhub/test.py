@@ -136,15 +136,15 @@ def ticket_info(driver):
     category,ticket_prices,sets_information,tickets_number,event_name,scrape_time = [],[],[],[],[],[]
     event_date,event_time, venue, city, city_shortcode = [], [], [], [], []
     
-    # sleep(3)
+    sleep(3)
     
-    wait = WebDriverWait(driver, 5)
-    try:
-        accept_cookies = wait.until( EC.visibility_of_element_located((By.XPATH, '//span[contains(text(),"Accept All")]')))
-        accept_cookies.click()
-        # print('Cookies are accepted...')
-    except Exception:
-        pass
+    # wait = WebDriverWait(driver, 5)
+    # try:
+    #     accept_cookies = wait.until( EC.visibility_of_element_located((By.XPATH, '//span[contains(text(),"Accept All")]')))
+    #     accept_cookies.click()
+    #     # print('Cookies are accepted...')
+    # except Exception:
+    #     pass
         
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     card_elements = soup.select('ul.RoyalTicketList__container > li')
