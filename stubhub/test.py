@@ -18,11 +18,8 @@ import time
 import json
 import os
 import requests
-from seleniumwire import webdriver
 import time
 from colorama import Fore
-import undetected_chromedriver as uc
-from selenium_stealth import stealth
 from datetime import datetime
 
 def get_browser():
