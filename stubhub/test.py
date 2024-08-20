@@ -215,7 +215,7 @@ def ticket_info(driver):
 
 
 def json_data(url,event_name,event_date,event_time, venue, city, city_shortcode,scrape_time, category, ticket_prices, sets_information, tickets_number):
-    print(Fore.WHITE + f"Total Numbers of category", len(category), {url})
+    # print(Fore.WHITE + f"Total Numbers of category", len(category), {url})
     event_df = pd.DataFrame(zip(event_name,event_date, event_time,venue, city, city_shortcode,scrape_time), columns=['Event Name', 'Event Date','Event Time','Venue','City','City Short Code','Scraped Time'])
     event_data = json.loads(event_df.to_json(orient='records'))
 
@@ -237,11 +237,11 @@ def json_data(url,event_name,event_date,event_time, venue, city, city_shortcode,
     headers = {'Content-Type': 'application/json'}
     sleep(1)
     response = requests.post(save_data_url, data=final_json_data_cleaned, headers=headers)
-    if response.status_code == 200:
-        pass
+    # if response.status_code == 200:
+        # pass
         # print(f'Data successfully sent to the server.{response.status_code}')
-    else:
-        print(f'Failed to send data. Status code: {response.status_code}')
+    # else:
+    #     print(f'Failed to send data. Status code: {response.status_code}')
     return True
 
 def process_url(index, url):
